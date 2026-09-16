@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Shipment | Global Touch Courier</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#1E3A8A',
+                        brandRed: '#DC2626',
+                        brandDark: '#0F172A'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-brandDark text-white text-xs py-2.5 px-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-6">
+                <span><i class="fa fa-phone text-brandRed mr-1.5"></i> +1 (800) 555-GLOBAL</span>
+                <span><i class="fa fa-envelope text-brandRed mr-1.5"></i> support@globaltouchcourier.com</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="track.html" class="hover:text-brandRed transition">Client Portal</a>
+                <span>|</span>
+                <a href="contact.html" class="hover:text-brandRed transition">Help & Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-11 w-auto object-contain">
+            </a>
+            
+            <nav class="hidden md:flex space-x-8 font-semibold text-sm">
+                <a href="index.html" class="text-gray-700 hover:text-brandRed transition">Home</a>
+                <a href="services.html" class="text-gray-700 hover:text-brandRed transition">Services</a>
+                <a href="track.html" class="text-brandRed transition">Track Shipment</a>
+                <a href="quote.html" class="text-gray-700 hover:text-brandRed transition">Get a Quote</a>
+                <a href="contact.html" class="text-gray-700 hover:text-brandRed transition">Contact Us</a>
+            </nav>
+
+            <div>
+                <a href="quote.html" class="bg-brandRed hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-red-500/20">
+                    Get a Quote
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title Header -->
+    <section class="bg-brandDark text-white py-12 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('cargo (2).png');"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <h1 class="text-3xl md:text-4xl font-black">Shipment Tracking Portal</h1>
+            <p class="text-gray-300 text-sm mt-2">Monitor real-time milestones, route progress, and delivery estimates worldwide.</p>
+        </div>
+    </section>
+
+    <!-- Main Tracking Interface Content -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-10">
+        
+        <!-- Search Box Container -->
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-100 mb-8">
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Enter Tracking Number or Consignee ID</label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                        <i class="fa fa-barcode"></i>
+                    </span>
+                    <input type="text" id="mainTrackingInput" placeholder="e.g. GT-984210 or GT-102938" class="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:border-brandBlue uppercase font-mono text-sm">
+                </div>
+                <button onclick="executeFullTrack()" class="bg-brandBlue hover:bg-blue-900 text-white px-8 py-3.5 rounded-xl font-bold transition flex items-center justify-center space-x-2 shadow-md">
+                    <i class="fa fa-search"></i>
+                    <span>Track Package</span>
+                </button>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Sample Tracking IDs to test: <code class="text-brandRed font-mono font-bold">GT-984210</code> (Air Freight) or <code class="text-brandRed font-mono font-bold">GT-102938</code> (Ground Delivery)</p>
+        </div>
+
+        <!-- Result Details Panel (Dynamic) -->
+        <div id="fullTrackingResult" class="hidden space-y-6">
+            
+            <!-- Overview Summary Card -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-6 gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Tracking Reference ID</span>
+                        <h2 id="resTrackingNum" class="text-2xl font-black font-mono text-brandBlue">GT-000000</h2>
+                    </div>
+                    <div>
+                        <span id="resStatusBadge" class="bg-brandRed text-white text-xs px-4 py-1.5 rounded-full font-bold uppercase tracking-wider">In Transit</span>
+                    </div>
+                </div>
+
+                <!-- Progress Tracker Bar Visual -->
+                <div class="py-8">
+                    <div class="relative flex justify-between max-w-2xl mx-auto">
+                        <!-- Progress Line Base -->
+                        <div class="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-1 bg-gray-200 z-0"></div>
+                        <!-- Active Fill Line -->
+                        <div id="progressBarFill" class="absolute top-1/2 left-0 -translate-y-1/2 h-1 bg-brandRed z-0 transition-all duration-500" style="width: 75%;"></div>
+
+                        <!-- Step 1 -->
+                        <div class="relative z-10 text-center">
+                            <div class="w-10 h-10 rounded-full bg-brandRed text-white flex items-center justify-center mx-auto shadow-md">
+                                <i class="fa fa-check text-xs"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-700 mt-2 block">Order Booked</span>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="relative z-10 text-center">
+                            <div id="stepIcon2" class="w-10 h-10 rounded-full bg-brandRed text-white flex items-center justify-center mx-auto shadow-md">
+                                <i class="fa fa-plane text-xs"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-700 mt-2 block">In Transit</span>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="relative z-10 text-center">
+                            <div id="stepIcon3" class="w-10 h-10 rounded-full bg-gray-300 text-white flex items-center justify-center mx-auto shadow-md">
+                                <i class="fa fa-box-open text-xs"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500 mt-2 block">Out for Delivery</span>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="relative z-10 text-center">
+                            <div id="stepIcon4" class="w-10 h-10 rounded-full bg-gray-300 text-white flex items-center justify-center mx-auto shadow-md">
+                                <i class="fa fa-flag-checkered text-xs"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500 mt-2 block">Delivered</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logistics Meta Information Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100 mt-4 text-sm">
+                    <div>
+                        <span class="text-gray-400 text-xs block">Shipper Details</span>
+                        <strong id="resSender" class="text-gray-800">--</strong>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 text-xs block">Receiver Details</span>
+                        <strong id="resRecipient" class="text-gray-800">--</strong>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 text-xs block">Shipping Method</span>
+                        <strong id="resService" class="text-brandBlue">--</strong>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 text-xs block">Estimated Delivery</span>
+                        <strong id="resEstDelivery" class="text-brandRed">--</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Activity Timeline -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
+                <h3 class="text-lg font-bold text-brandBlue mb-6 flex items-center">
+                    <i class="fa fa-history text-brandRed mr-2"></i> Shipment Audit Trail & Milestones
+                </h3>
+                <div id="resTimelineContainer" class="space-y-4 pl-2">
+                    <!-- Dynamic timeline items injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Error State Alert (Hidden by default) -->
+        <div id="fullTrackingError" class="hidden bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center">
+            <i class="fa fa-triangle-exclamation text-3xl mb-2 text-brandRed"></i>
+            <h4 class="font-bold text-lg">Shipment Not Found</h4>
+            <p class="text-sm mt-1">We couldn't locate any active consignment matching your entry. Please check your alphanumeric code and try again.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brandDark text-white py-10 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400">
+            <div>
+                <img src="logo global.png" alt="Logo" class="h-8 w-auto brightness-0 invert mb-2">
+                <p>&copy; 2026 Global Touch Courier. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="index.html" class="hover:text-white transition">Home</a>
+                <a href="services.html" class="hover:text-white transition">Services</a>
+                <a href="quote.html" class="hover:text-white transition">Get Quote</a>
+                <a href="contact.html" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Full Tracking Engine Code -->
+    <script>
+        const trackingDatabase = {
+            "GT-984210": {
+                sender: "Sarah Jenkins (New York, USA)",
+                recipient: "Michael Chen (London, UK)",
+                service: "Air Freight Express",
+                status: "In Transit",
+                currentLocation: "Heathrow Hub, London",
+                estimatedDelivery: "June 20, 2026",
+                progressWidth: "66%",
+                history: [
+                    { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
+                    { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
+                    { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
+                ]
+            },
+            "GT-102938": {
+                sender: "TechCorp Logistics (Berlin, Germany)",
+                recipient: "Global Solutions (Paris, France)",
+                service: "Ground Road Delivery",
+                status: "Out for Delivery",
+                currentLocation: "Paris Local Distribution Centre",
+                estimatedDelivery: "Today by 4:00 PM",
+                progressWidth: "90%",
+                history: [
+                    { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
+                    { date: "June 17, 2026 - 22:00 PM", status: "Customs Clearance Passed", location: "German/French Border Checkpoint" },
+                    { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
+                ]
+            }
+        };
+
+        function executeFullTrack(codeParam = null) {
+            const inputVal = codeParam || document.getElementById('mainTrackingInput').value.trim().toUpperCase();
+            const resultBox = document.getElementById('fullTrackingResult');
+            const errorBox = document.getElementById('fullTrackingError');
+
+            if (!inputVal) {
+                alert("Please enter a tracking code.");
+                return;
+            }
+
+            // Sync input field value if coming from URL parameter
+            document.getElementById('mainTrackingInput').value = inputVal;
+
+            const data = trackingDatabase[inputVal];
+
+            if (data) {
+                errorBox.classList.add('hidden');
+                
+                // Populate text elements
+                document.getElementById('resTrackingNum').innerText = inputVal;
+                document.getElementById('resStatusBadge').innerText = data.status;
+                document.getElementById('resSender').innerText = data.sender;
+                document.getElementById('resRecipient').innerText = data.recipient;
+                document.getElementById('resService').innerText = data.service;
+                document.getElementById('resEstDelivery').innerText = data.estimatedDelivery;
+                document.getElementById('progressBarFill').style.width = data.progressWidth;
+
+                // Build timeline audit trail items
+                let timelineHtml = '';
+                data.history.forEach((h, index) => {
+                    const isLatest = index === data.history.length - 1;
+                    timelineHtml += `
+                        <div class="relative pl-8 pb-6 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'}"></div>
+                            <span class="text-xs text-gray-400 font-semibold">${h.date}</span>
+                            <h4 class="text-sm font-bold text-brandBlue mt-0.5">${h.status}</h4>
+                            <p class="text-xs text-gray-600 mt-1"><i class="fa fa-map-marker-alt text-brandRed mr-1"></i> ${h.location}</p>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('resTimelineContainer').innerHTML = timelineHtml;
+                resultBox.classList.remove('hidden');
+            } else {
+                resultBox.classList.add('hidden');
+                errorBox.classList.remove('hidden');
+            }
+        }
+
+        // Auto-detect URL parameter on page load (e.g., track.html?code=GT-984210)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const codeQuery = urlParams.get('code');
+            if (codeQuery) {
+                executeFullTrack(codeQuery.toUpperCase());
+            }
+        };
+    </script>
+</body>
+</html>
