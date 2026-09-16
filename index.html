@@ -231,7 +231,6 @@
 
     <!-- Interactive Scripts -->
     <script>
-        // Mobile Menu Toggle Function
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('menuIcon');
@@ -246,34 +245,42 @@
             }
         }
 
-        // Tracking Database Simulation
-        const trackingDatabase = {
-            "GT-984210": {
-                sender: "Sarah Jenkins (New York, USA)",
-                recipient: "Michael Chen (London, UK)",
-                service: "Air Freight Express",
-                status: "In Transit",
-                currentLocation: "Heathrow Hub, London",
-                estimatedDelivery: "June 20, 2026",
-                history: [
-                    { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
-                    { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
-                    { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
-                ]
-            },
-            "GT-102938": {
-                sender: "TechCorp Logistics (Berlin, Germany)",
-                recipient: "Global Solutions (Paris, France)",
-                service: "Ground Road Delivery",
-                status: "Out for Delivery",
-                currentLocation: "Paris Local Distribution Centre",
-                estimatedDelivery: "Today by 4:00 PM",
-                history: [
-                    { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
-                    { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
-                ]
+        // Shared Database Loader
+        function getPublicDatabase() {
+            const customData = localStorage.getItem('gt_shipments_db');
+            if (customData) {
+                return JSON.parse(customData);
             }
-        };
+            const defaultDb = {
+                "GT-984210": {
+                    sender: "Sarah Jenkins (New York, USA)",
+                    recipient: "Michael Chen (London, UK)",
+                    service: "Air Freight Express",
+                    status: "In Transit",
+                    currentLocation: "Heathrow Hub, London",
+                    estimatedDelivery: "June 20, 2026",
+                    history: [
+                        { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
+                        { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
+                        { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
+                    ]
+                },
+                "GT-102938": {
+                    sender: "TechCorp Logistics (Berlin, Germany)",
+                    recipient: "Global Solutions (Paris, France)",
+                    service: "Ground Road Delivery",
+                    status: "Out for Delivery",
+                    currentLocation: "Paris Local Distribution Centre",
+                    estimatedDelivery: "Today by 4:00 PM",
+                    history: [
+                        { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
+                        { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
+                    ]
+                }
+            };
+            localStorage.setItem('gt_shipments_db', JSON.stringify(defaultDb));
+            return defaultDb;
+        }
 
         function homeTrackShipment() {
             const inputVal = document.getElementById('homeTrackingInput').value.trim().toUpperCase();
@@ -284,6 +291,7 @@
                 return;
             }
 
+            const trackingDatabase = getPublicDatabase();
             const data = trackingDatabase[inputVal];
 
             if (data) {
@@ -322,7 +330,7 @@
             } else {
                 resultDiv.innerHTML = `
                     <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs">
-                        <i class="fa fa-circle-exclamation mr-1"></i> No matching package for <strong>${inputVal}</strong>. Try <a href="track.html" class="underline font-bold">advanced tracking</a>.
+                        <i class="fa fa-circle-exclamation mr-1"></i> No matching package for <strong>${inputVal}</strong>. Try checking your tracking number.
                     </div>
                 `;
             }
