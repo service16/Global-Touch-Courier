@@ -23,55 +23,58 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans overflow-x-hidden">
 
-    <!-- Navigation Header with Mobile Toggle -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <!-- Navigation Header (Red Background with Dark Logo Backing) -->
+    <header class="bg-brandRed shadow-md sticky top-0 z-50 border-b border-red-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-9 sm:h-11 w-auto object-contain">
+            
+            <!-- Logo with a sleek dark container backing so it stands out cleanly on red -->
+            <a href="index.html" class="flex items-center space-x-3 bg-gray-900/90 px-3.5 py-2 rounded-xl border border-gray-800 shadow-md">
+                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-9 sm:h-11 w-auto object-contain brightness-0 invert">
             </a>
             
             <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex space-x-8 font-semibold text-sm">
-                <a href="index.html" class="text-brandRed transition">Home</a>
-                <a href="services.html" class="text-gray-700 hover:text-brandRed transition">Services</a>
-                <a href="track.html" class="text-gray-700 hover:text-brandRed transition">Track Shipment</a>
-                <a href="quote.html" class="text-gray-700 hover:text-brandRed transition">Get a Quote</a>
-                <a href="contact.html" class="text-gray-700 hover:text-brandRed transition">Contact Us</a>
+                <a href="index.html" class="text-white hover:text-gray-200 transition">Home</a>
+                <a href="services.html" class="text-red-100 hover:text-white transition">Services</a>
+                <a href="track.html" class="text-red-100 hover:text-white transition">Track Shipment</a>
+                <a href="quote.html" class="text-red-100 hover:text-white transition">Get a Quote</a>
+                <a href="contact.html" class="text-red-100 hover:text-white transition">Contact Us</a>
             </nav>
 
+            <!-- Track Package Button (Blue) -->
             <div class="hidden md:flex items-center space-x-3">
-                <a href="track.html" class="bg-brandRed hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-red-500/20">
+                <a href="track.html" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-black/20">
                     <i class="fa fa-box-open mr-1.5"></i> Track Package
                 </a>
             </div>
 
             <!-- Mobile Menu Button -->
-            <button onclick="toggleMobileMenu()" class="md:hidden text-brandBlue text-2xl focus:outline-none p-1">
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl focus:outline-none p-1">
                 <i id="menuIcon" class="fa fa-bars"></i>
             </button>
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-3 shadow-xl">
-            <a href="index.html" class="block text-brandRed font-bold py-2 border-b border-gray-50">Home</a>
-            <a href="services.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Services</a>
-            <a href="track.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Track Shipment</a>
-            <a href="quote.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Get a Quote</a>
-            <a href="contact.html" class="block text-gray-700 font-semibold py-2">Contact Us</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-brandRed border-t border-red-700 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-white font-bold py-2 border-b border-red-700/60">Home</a>
+            <a href="services.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Services</a>
+            <a href="track.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Track Shipment</a>
+            <a href="quote.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Get a Quote</a>
+            <a href="contact.html" class="block text-red-100 font-semibold py-2">Contact Us</a>
             <div class="pt-2">
-                <a href="track.html" class="block text-center bg-brandRed text-white py-3 rounded-xl font-bold shadow-md">
+                <a href="track.html" class="block text-center bg-brandBlue text-white py-3 rounded-xl font-bold shadow-md">
                     Track Package Now
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Cargo Flight Banner Section (Entirely Clean, No Overlay, Fully Visible Image) -->
+    <!-- Cargo Flight Banner Section -->
     <section class="w-full bg-brandDark">
         <div class="w-full h-[280px] sm:h-[450px] lg:h-[580px] bg-[image:var(--hero-bg)] bg-cover bg-center bg-no-repeat" style="--hero-bg: url('cargo (2).png');"></div>
     </section>
 
-    <!-- Quick Track Section (Placed Completely Below the Flight Image) -->
+    <!-- Quick Track Section -->
     <section class="bg-gray-100 py-10 px-4">
         <div class="max-w-xl mx-auto">
             <div class="bg-white text-gray-900 p-6 sm:p-8 rounded-3xl shadow-xl border-t-4 border-brandRed">
