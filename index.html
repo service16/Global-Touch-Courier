@@ -81,34 +81,37 @@
         </div>
     </header>
 
-    <!-- Hero Section with cargo (2).png Background -->
-    <section class="relative bg-brandDark text-white py-20 sm:py-28 px-4 overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('cargo (2).png');"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-brandDark via-brandBlue/90 to-transparent"></div>
+    <!-- Hero Section: Fully Visible Background Image Optimization -->
+    <section class="relative bg-brandDark text-white py-16 sm:py-24 lg:py-28 px-4 overflow-hidden">
+        <!-- Background Image with adjusted opacity and size properties so it fits completely without awkward cropping -->
+        <div class="absolute inset-0 bg-[image:var(--hero-bg)] bg-cover sm:bg-contain lg:bg-cover bg-center bg-no-repeat opacity-40 sm:opacity-50" style="--hero-bg: url('cargo (2).png');"></div>
+        
+        <!-- Stronger dark gradient overlay to ensure text remains crisp and highly visible against the plane image -->
+        <div class="absolute inset-0 bg-gradient-to-r from-brandDark/95 via-brandDark/85 to-brandDark/60 sm:from-brandDark/90 sm:via-brandBlue/80 sm:to-brandDark/40"></div>
 
         <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-                <span class="bg-brandRed/20 text-brandRed border border-brandRed/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block">
+                <span class="bg-brandRed/25 text-brandRed border border-brandRed/40 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block backdrop-blur-sm">
                     <i class="fa fa-globe-americas mr-1"></i> Global Express Logistics
                 </span>
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black mt-4 leading-tight">
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black mt-4 leading-tight drop-shadow-md">
                     Fast, Secure & Reliable <span class="text-brandRed">Worldwide Shipping</span>.
                 </h1>
-                <p class="mt-4 text-gray-300 text-base sm:text-lg leading-relaxed">
+                <p class="mt-4 text-gray-200 text-base sm:text-lg leading-relaxed font-medium drop-shadow">
                     Connecting businesses and individuals across continents with next-gen freight solutions, real-time tracking, and absolute security.
                 </p>
                 <div class="mt-8 flex flex-col sm:flex-row gap-4">
                     <a href="quote.html" class="bg-brandRed hover:bg-red-700 text-white px-7 py-3.5 rounded-xl font-bold transition text-center shadow-lg shadow-red-600/30">
                         Calculate Shipping Cost
                     </a>
-                    <a href="services.html" class="bg-white/10 hover:bg-white/20 text-white border border-white/25 px-7 py-3.5 rounded-xl font-bold transition text-center">
+                    <a href="services.html" class="bg-white/15 hover:bg-white/25 text-white border border-white/30 px-7 py-3.5 rounded-xl font-bold transition text-center backdrop-blur-sm">
                         Explore Services
                     </a>
                 </div>
             </div>
 
             <!-- Quick Track Widget Card -->
-            <div class="bg-white text-gray-900 p-6 sm:p-8 rounded-2xl shadow-2xl border-t-4 border-brandRed">
+            <div class="bg-white text-gray-900 p-6 sm:p-8 rounded-2xl shadow-2xl border-t-4 border-brandRed backdrop-blur-md">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl sm:text-2xl font-bold text-brandBlue">Quick Track</h3>
                     <span class="text-xs bg-red-100 text-brandRed font-bold px-2.5 py-1 rounded">Live Engine</span>
