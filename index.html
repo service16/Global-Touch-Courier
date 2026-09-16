@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Touch Courier | Fast & Reliable Worldwide Shipping</title>
-    <!-- Tailwind CSS for rapid, professional styling -->
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -37,17 +37,12 @@
         </div>
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Header with Real Logo -->
     <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="bg-brandRed text-white p-2 rounded-lg font-bold text-xl">
-                    <i class="fa fa-globe"></i>
-                </div>
-                <div>
-                    <span class="text-2xl font-black text-brandBlue tracking-tight">GLOBAL TOUCH</span>
-                    <span class="block text-xs uppercase tracking-widest text-brandRed font-semibold">Courier & Logistics</span>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Using your uploaded logo -->
+                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-10 w-auto object-contain">
             </div>
             <nav class="hidden md:flex space-x-8 font-medium">
                 <a href="#" class="text-brandBlue hover:text-brandRed transition">Home</a>
@@ -64,9 +59,12 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-r from-brandDark via-brandBlue to-blue-900 text-white py-24 px-4 overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <!-- Hero Section with cargo (2).png Background -->
+    <section class="relative bg-brandDark text-white py-24 px-4 overflow-hidden">
+        <!-- Background Image with Dark Overlay for Text Readability -->
+        <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('cargo (2).png');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-brandDark via-brandBlue/80 to-transparent"></div>
+
         <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
                 <span class="bg-brandRed/20 text-brandRed border border-brandRed/30 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
@@ -82,7 +80,7 @@
                     <a href="#services" class="bg-brandRed hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition">
                         Our Services
                     </a>
-                    <a href="#track" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-lg font-semibold transition">
+                    <a href="#track" class="bg-white/10 hover:bg-white/25 text-white border border-white/20 px-6 py-3 rounded-lg font-semibold transition">
                         Track Now
                     </a>
                 </div>
@@ -105,10 +103,8 @@
                     </div>
                 </div>
 
-                <!-- Tracking Result Container (Hidden by default) -->
-                <div id="trackingResult" class="mt-6 hidden border-t pt-4">
-                    <!-- Dynamic content injected via JavaScript -->
-                </div>
+                <!-- Tracking Result Container -->
+                <div id="trackingResult" class="mt-6 hidden border-t pt-4"></div>
             </div>
         </div>
     </section>
@@ -151,10 +147,7 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
                 <div class="flex items-center space-x-2 mb-4">
-                    <div class="bg-brandRed text-white p-1.5 rounded font-bold">
-                        <i class="fa fa-globe"></i>
-                    </div>
-                    <span class="text-xl font-black tracking-tight">GLOBAL TOUCH</span>
+                    <img src="logo global.png" alt="Logo" class="h-8 w-auto brightness-0 invert">
                 </div>
                 <p class="text-gray-400 text-sm">Global Touch Courier delivers operational excellence across international borders with cutting-edge tracking mechanisms.</p>
             </div>
@@ -190,9 +183,8 @@
         </div>
     </footer>
 
-    <!-- Stage 3 Interactive Tracking Engine Script -->
+    <!-- Tracking Script -->
     <script>
-        // Simulated Database for tracking items
         const trackingDatabase = {
             "GT-984210": {
                 sender: "Sarah Jenkins (New York, USA)",
