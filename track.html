@@ -24,37 +24,37 @@
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
     <!-- Navigation Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-brandRed shadow-md sticky top-0 z-50 border-b border-red-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="logo global.png" alt="Logo" class="h-9 sm:h-11 w-auto object-contain">
+            <a href="index.html" class="flex items-center space-x-3 bg-gray-900/90 px-3.5 py-2 rounded-xl border border-gray-800 shadow-md">
+                <img src="logo global.png" alt="Logo" class="h-9 sm:h-11 w-auto object-contain brightness-0 invert">
             </a>
             
             <nav class="hidden md:flex space-x-8 font-semibold text-sm">
-                <a href="index.html" class="text-gray-700 hover:text-brandRed transition">Home</a>
-                <a href="services.html" class="text-gray-700 hover:text-brandRed transition">Services</a>
-                <a href="track.html" class="text-brandRed transition">Track Shipment</a>
-                <a href="quote.html" class="text-gray-700 hover:text-brandRed transition">Get a Quote</a>
-                <a href="contact.html" class="text-gray-700 hover:text-brandRed transition">Contact Us</a>
+                <a href="index.html" class="text-red-100 hover:text-white transition">Home</a>
+                <a href="services.html" class="text-red-100 hover:text-white transition">Services</a>
+                <a href="track.html" class="text-white hover:text-gray-200 transition">Track Shipment</a>
+                <a href="quote.html" class="text-red-100 hover:text-white transition">Get a Quote</a>
+                <a href="contact.html" class="text-red-100 hover:text-white transition">Contact Us</a>
             </nav>
 
             <div class="hidden md:flex items-center space-x-3">
-                <a href="track.html" class="bg-brandRed hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-red-500/20">
+                <a href="track.html" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-black/20">
                     <i class="fa fa-box-open mr-1.5"></i> Track Package
                 </a>
             </div>
 
-            <button onclick="toggleMobileMenu()" class="md:hidden text-brandBlue text-2xl focus:outline-none p-1">
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl focus:outline-none p-1">
                 <i id="menuIcon" class="fa fa-bars"></i>
             </button>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-3 shadow-xl">
-            <a href="index.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Home</a>
-            <a href="services.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Services</a>
-            <a href="track.html" class="block text-brandRed font-bold py-2 border-b border-gray-50">Track Shipment</a>
-            <a href="quote.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Get a Quote</a>
-            <a href="contact.html" class="block text-gray-700 font-semibold py-2">Contact Us</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-brandRed border-t border-red-700 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Home</a>
+            <a href="services.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Services</a>
+            <a href="track.html" class="block text-white font-bold py-2 border-b border-red-700/60">Track Shipment</a>
+            <a href="quote.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Get a Quote</a>
+            <a href="contact.html" class="block text-red-100 font-semibold py-2">Contact Us</a>
         </div>
     </header>
 
@@ -137,7 +137,6 @@
             };
         }
 
-        // Auto-run if URL query parameter ?code=... is present
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const codeParam = urlParams.get('code');
@@ -176,7 +175,6 @@
                 });
 
                 resultContainer.innerHTML = `
-                    <!-- Summary Card -->
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-6 gap-4">
                             <div>
@@ -215,7 +213,6 @@
                         </div>
                     </div>
 
-                    <!-- Activity History Timeline Card -->
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
                         <h3 class="text-lg font-bold text-brandBlue mb-6">Consignment Checkpoint Logs</h3>
                         <div class="space-y-1">
