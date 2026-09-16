@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | Global Touch Courier</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#1E3A8A',
+                        brandRed: '#DC2626',
+                        brandDark: '#0F172A'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-brandDark text-white text-xs py-2.5 px-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-6">
+                <span><i class="fa fa-phone text-brandRed mr-1.5"></i> +1 (800) 555-GLOBAL</span>
+                <span><i class="fa fa-envelope text-brandRed mr-1.5"></i> support@globaltouchcourier.com</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="track.html" class="hover:text-brandRed transition">Client Portal</a>
+                <span>|</span>
+                <a href="contact.html" class="hover:text-brandRed transition">Help & Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-11 w-auto object-contain">
+            </a>
+            
+            <nav class="hidden md:flex space-x-8 font-semibold text-sm">
+                <a href="index.html" class="text-gray-700 hover:text-brandRed transition">Home</a>
+                <a href="services.html" class="text-brandRed transition">Services</a>
+                <a href="track.html" class="text-gray-700 hover:text-brandRed transition">Track Shipment</a>
+                <a href="quote.html" class="text-gray-700 hover:text-brandRed transition">Get a Quote</a>
+                <a href="contact.html" class="text-gray-700 hover:text-brandRed transition">Contact Us</a>
+            </nav>
+
+            <div>
+                <a href="quote.html" class="bg-brandRed hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-red-500/20">
+                    Get a Quote
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header Hero -->
+    <section class="bg-brandDark text-white py-16 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('cargo (2).png');"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <span class="bg-brandRed/20 text-brandRed border border-brandRed/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                Enterprise Logistics
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black mt-3">Our Worldwide Shipping Services</h1>
+            <p class="text-gray-300 text-sm md:text-base mt-3 max-w-2xl mx-auto">From rapid air express delivery to heavy container seafaring freight, we deliver operational security and precision worldwide.</p>
+        </div>
+    </section>
+
+    <!-- Detailed Services Content Section -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-16 space-y-16">
+        
+        <!-- Service 1: Air Freight -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-white p-8 sm:p-12 rounded-3xl shadow-lg border border-gray-100">
+            <div>
+                <div class="w-16 h-16 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">
+                    <i class="fa fa-plane-departure"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-brandBlue mb-4">Air Freight Express</h2>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
+                    When speed is paramount, our Air Freight solutions provide the fastest routing across international borders. We manage secure airport-to-airport and door-to-door cargo transfers for time-sensitive documents, high-value tech, and urgent industrial equipment.
+                </p>
+                <ul class="space-y-2.5 text-sm text-gray-700 font-medium mb-8">
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Guaranteed priority boarding on scheduled flights</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Comprehensive customs documentation clearance support</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Real-time checkpoint scan updates</li>
+                </ul>
+                <a href="quote.html" class="inline-block bg-brandBlue hover:bg-blue-900 text-white font-bold px-6 py-3 rounded-xl transition shadow-md text-sm">
+                    Book Air Cargo &rarr;
+                </a>
+            </div>
+            <div class="bg-blue-900/5 rounded-2xl p-8 border border-blue-100 flex flex-col justify-center h-full">
+                <h3 class="font-bold text-brandBlue text-lg mb-4"><i class="fa fa-info-circle text-brandRed mr-2"></i> Key Specifications</h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Transit Time:</span> <strong class="text-brandBlue">1 - 3 Business Days</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Weight Capacity:</span> <strong class="text-brandBlue">No minimum / No maximum limit</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Global Coverage:</span> <strong class="text-brandBlue">Over 180+ Countries</strong></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Security Tracking:</span> <strong class="text-brandRed">Active Live Feed</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 2: Ocean Freight -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-white p-8 sm:p-12 rounded-3xl shadow-lg border border-gray-100">
+            <div class="order-2 md:order-1 bg-blue-900/5 rounded-2xl p-8 border border-blue-100 flex flex-col justify-center h-full">
+                <h3 class="font-bold text-brandBlue text-lg mb-4"><i class="fa fa-info-circle text-brandRed mr-2"></i> Key Specifications</h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Transit Time:</span> <strong class="text-brandBlue">15 - 35 Business Days</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Containers:</span> <strong class="text-brandBlue">FCL & LCL Options</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Cost Efficiency:</span> <strong class="text-brandBlue">Highest for Bulk Cargo</strong></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Port Network:</span> <strong class="text-brandRed">Major Global Seaports</strong></div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <div class="w-16 h-16 bg-blue-100 text-brandBlue rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">
+                    <i class="fa fa-ship"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-brandBlue mb-4">Ocean Freight Cargo</h2>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
+                    Designed for heavy commercial merchandise and bulky shipments, our ocean freight operations offer economical Full Container Load (FCL) and Less than Container Load (LCL) configurations partnered with reliable container carriers.
+                </p>
+                <ul class="space-y-2.5 text-sm text-gray-700 font-medium mb-8">
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Cost-optimized solutions for wholesale distribution</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Container tracking and terminal handling coordination</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Secure warehousing and consolidation services</li>
+                </ul>
+                <a href="quote.html" class="inline-block bg-brandBlue hover:bg-blue-900 text-white font-bold px-6 py-3 rounded-xl transition shadow-md text-sm">
+                    Book Ocean Cargo &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Service 3: Ground Trucking -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-white p-8 sm:p-12 rounded-3xl shadow-lg border border-gray-100">
+            <div>
+                <div class="w-16 h-16 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner">
+                    <i class="fa fa-truck-fast"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-brandBlue mb-4">Ground Road Delivery</h2>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
+                    Our robust domestic and regional trucking fleets guarantee reliable door-to-door transit, local payload distribution, and interstate connectivity with satellite tracking systems embedded into every vehicle.
+                </p>
+                <ul class="space-y-2.5 text-sm text-gray-700 font-medium mb-8">
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Flexible scheduled drop-offs and express courier vans</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Temperature-controlled fleet options available</li>
+                    <li><i class="fa fa-check-circle text-brandRed mr-2"></i> Fully insured continental haulage networks</li>
+                </ul>
+                <a href="quote.html" class="inline-block bg-brandBlue hover:bg-blue-900 text-white font-bold px-6 py-3 rounded-xl transition shadow-md text-sm">
+                    Book Road Freight &rarr;
+                </a>
+            </div>
+            <div class="bg-blue-900/5 rounded-2xl p-8 border border-blue-100 flex flex-col justify-center h-full">
+                <h3 class="font-bold text-brandBlue text-lg mb-4"><i class="fa fa-info-circle text-brandRed mr-2"></i> Key Specifications</h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Transit Time:</span> <strong class="text-brandBlue">1 - 5 Days Regional</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Fleet Security:</span> <strong class="text-brandBlue">GPS Telematics Monitored</strong></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Door Pickup:</span> <strong class="text-brandBlue">Included on Request</strong></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Tracking Feed:</span> <strong class="text-brandRed">Real-Time Status Updates</strong></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brandDark text-white py-12 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400">
+            <div>
+                <img src="logo global.png" alt="Logo" class="h-8 w-auto brightness-0 invert mb-2">
+                <p>&copy; 2026 Global Touch Courier. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="index.html" class="hover:text-white transition">Home</a>
+                <a href="services.html" class="hover:text-white transition">Services</a>
+                <a href="track.html" class="hover:text-white transition">Track Shipment</a>
+                <a href="quote.html" class="hover:text-white transition">Get Quote</a>
+                <a href="contact.html" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
