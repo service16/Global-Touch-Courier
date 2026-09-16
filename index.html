@@ -66,17 +66,18 @@
         </div>
     </header>
 
-    <!-- Hero Section: Crystal Clear Cargo Background Image with Tracking Widget Only -->
-    <section class="relative bg-brandDark text-white py-16 sm:py-24 lg:py-32 px-4 overflow-hidden">
-        <!-- Background Image set to full visibility -->
+    <!-- Hero Section: Full Cargo Background with Quick Track Below -->
+    <section class="relative bg-brandDark text-white py-20 sm:py-28 lg:py-36 px-4 overflow-hidden flex flex-col justify-center items-center">
+        <!-- Background Image fully visible -->
         <div class="absolute inset-0 bg-[image:var(--hero-bg)] bg-cover bg-center bg-no-repeat opacity-100" style="--hero-bg: url('cargo (2).png');"></div>
         
-        <!-- Dark overlay to ensure the tracker card stands out clearly -->
-        <div class="absolute inset-0 bg-brandDark/50 sm:bg-brandDark/40"></div>
+        <!-- Subtle dark overlay to anchor the section without masking the plane -->
+        <div class="absolute inset-0 bg-brandDark/40"></div>
 
-        <div class="max-w-7xl mx-auto relative z-10 flex justify-center items-center">
-            <!-- Quick Track Widget Card (Centered) -->
-            <div class="bg-white text-gray-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-t-4 border-brandRed w-full max-w-xl backdrop-blur-md">
+        <!-- Content Container (Stacked: Airplane visible top/center, Widget below) -->
+        <div class="max-w-xl w-full relative z-10 mt-12 sm:mt-16">
+            <!-- Quick Track Widget Card -->
+            <div class="bg-white text-gray-900 p-6 sm:p-8 rounded-3xl shadow-2xl border-t-4 border-brandRed backdrop-blur-md">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl sm:text-2xl font-bold text-brandBlue">Quick Track</h3>
                     <span class="text-xs bg-red-100 text-brandRed font-bold px-2.5 py-1 rounded">Live Engine</span>
