@@ -21,17 +21,16 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans overflow-x-hidden">
 
     <!-- Top Bar -->
-    <div class="bg-brandDark text-white text-xs py-2.5 px-4 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center space-x-6">
+    <div class="bg-brandDark text-white text-[11px] sm:text-xs py-2.5 px-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
+            <div class="flex flex-wrap justify-center sm:justify-start items-center gap-4">
                 <span><i class="fa fa-phone text-brandRed mr-1.5"></i> +1 (800) 555-GLOBAL</span>
                 <span><i class="fa fa-envelope text-brandRed mr-1.5"></i> support@globaltouchcourier.com</span>
-                <span class="hidden lg:inline"><i class="fa fa-clock text-brandRed mr-1.5"></i> Mon - Sat: 8:00 AM - 7:00 PM</span>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="hidden md:flex items-center space-x-4">
                 <a href="track.html" class="hover:text-brandRed transition">Client Portal</a>
                 <span>|</span>
                 <a href="contact.html" class="hover:text-brandRed transition">Help & Support</a>
@@ -39,14 +38,14 @@
         </div>
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Header with Mobile Toggle -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3">
-                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-11 w-auto object-contain">
+                <img src="logo global.png" alt="Global Touch Courier Logo" class="h-9 sm:h-11 w-auto object-contain">
             </a>
             
-            <!-- Navigation Links -->
+            <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex space-x-8 font-semibold text-sm">
                 <a href="index.html" class="text-brandRed transition">Home</a>
                 <a href="services.html" class="text-gray-700 hover:text-brandRed transition">Services</a>
@@ -55,54 +54,73 @@
                 <a href="contact.html" class="text-gray-700 hover:text-brandRed transition">Contact Us</a>
             </nav>
 
-            <div class="flex items-center space-x-3">
+            <div class="hidden md:flex items-center space-x-3">
                 <a href="track.html" class="bg-brandRed hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-red-500/20">
                     <i class="fa fa-box-open mr-1.5"></i> Track Package
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-brandBlue text-2xl focus:outline-none p-1">
+                <i id="menuIcon" class="fa fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-brandRed font-bold py-2 border-b border-gray-50">Home</a>
+            <a href="services.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Services</a>
+            <a href="track.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Track Shipment</a>
+            <a href="quote.html" class="block text-gray-700 font-semibold py-2 border-b border-gray-50">Get a Quote</a>
+            <a href="contact.html" class="block text-gray-700 font-semibold py-2">Contact Us</a>
+            <div class="pt-2">
+                <a href="track.html" class="block text-center bg-brandRed text-white py-3 rounded-xl font-bold shadow-md">
+                    Track Package Now
                 </a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section with cargo (2).png Background -->
-    <section class="relative bg-brandDark text-white py-28 px-4 overflow-hidden">
+    <section class="relative bg-brandDark text-white py-20 sm:py-28 px-4 overflow-hidden">
         <div class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('cargo (2).png');"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-brandDark via-brandBlue/90 to-transparent"></div>
 
         <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-                <span class="bg-brandRed/20 text-brandRed border border-brandRed/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                <span class="bg-brandRed/20 text-brandRed border border-brandRed/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block">
                     <i class="fa fa-globe-americas mr-1"></i> Global Express Logistics
                 </span>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mt-4 leading-tight">
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black mt-4 leading-tight">
                     Fast, Secure & Reliable <span class="text-brandRed">Worldwide Shipping</span>.
                 </h1>
-                <p class="mt-4 text-gray-300 text-lg leading-relaxed">
+                <p class="mt-4 text-gray-300 text-base sm:text-lg leading-relaxed">
                     Connecting businesses and individuals across continents with next-gen freight solutions, real-time tracking, and absolute security.
                 </p>
-                <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="quote.html" class="bg-brandRed hover:bg-red-700 text-white px-7 py-3.5 rounded-lg font-bold transition shadow-lg shadow-red-600/30">
+                <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                    <a href="quote.html" class="bg-brandRed hover:bg-red-700 text-white px-7 py-3.5 rounded-xl font-bold transition text-center shadow-lg shadow-red-600/30">
                         Calculate Shipping Cost
                     </a>
-                    <a href="services.html" class="bg-white/10 hover:bg-white/20 text-white border border-white/25 px-7 py-3.5 rounded-lg font-bold transition">
+                    <a href="services.html" class="bg-white/10 hover:bg-white/20 text-white border border-white/25 px-7 py-3.5 rounded-xl font-bold transition text-center">
                         Explore Services
                     </a>
                 </div>
             </div>
 
             <!-- Quick Track Widget Card -->
-            <div class="bg-white text-gray-900 p-8 rounded-2xl shadow-2xl border-t-4 border-brandRed">
+            <div class="bg-white text-gray-900 p-6 sm:p-8 rounded-2xl shadow-2xl border-t-4 border-brandRed">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-2xl font-bold text-brandBlue">Quick Track</h3>
+                    <h3 class="text-xl sm:text-2xl font-bold text-brandBlue">Quick Track</h3>
                     <span class="text-xs bg-red-100 text-brandRed font-bold px-2.5 py-1 rounded">Live Engine</span>
                 </div>
-                <p class="text-sm text-gray-500 mb-6">Enter your consignment code (Try: <code class="bg-gray-100 text-brandRed font-mono px-1.5 py-0.5 rounded">GT-984210</code>)</p>
+                <p class="text-xs sm:text-sm text-gray-500 mb-6">Enter your consignment code (Try: <code class="bg-gray-100 text-brandRed font-mono px-1.5 py-0.5 rounded">GT-984210</code>)</p>
                 
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Tracking Number</label>
                         <div class="flex">
-                            <input type="text" id="homeTrackingInput" placeholder="e.g. GT-984210" class="flex-1 border border-gray-300 rounded-l-lg px-4 py-3.5 focus:outline-none focus:border-brandBlue uppercase font-mono text-sm">
-                            <button onclick="homeTrackShipment()" class="bg-brandBlue hover:bg-blue-900 text-white px-6 rounded-r-lg font-medium transition flex items-center justify-center">
+                            <input type="text" id="homeTrackingInput" placeholder="e.g. GT-984210" class="flex-1 border border-gray-300 rounded-l-xl px-3 sm:px-4 py-3.5 focus:outline-none focus:border-brandBlue uppercase font-mono text-xs sm:text-sm">
+                            <button onclick="homeTrackShipment()" class="bg-brandBlue hover:bg-blue-900 text-white px-5 sm:px-6 rounded-r-xl font-medium transition flex items-center justify-center">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -118,37 +136,37 @@
     <!-- Stats Bar -->
     <section class="bg-brandBlue text-white py-8 px-4">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div class="border-r border-blue-800/60 last:border-none">
+            <div class="border-b md:border-b-0 md:border-r border-blue-800/60 pb-4 md:pb-0 last:border-none">
                 <p class="text-3xl lg:text-4xl font-black text-brandRed">180+</p>
-                <p class="text-xs uppercase tracking-widest text-gray-300 mt-1">Countries Covered</p>
+                <p class="text-[11px] sm:text-xs uppercase tracking-widest text-gray-300 mt-1">Countries Covered</p>
             </div>
-            <div class="border-r border-blue-800/60 last:border-none">
+            <div class="border-b md:border-b-0 md:border-r border-blue-800/60 pb-4 md:pb-0 last:border-none">
                 <p class="text-3xl lg:text-4xl font-black text-brandRed">1.5M+</p>
-                <p class="text-xs uppercase tracking-widest text-gray-300 mt-1">Packages Delivered</p>
+                <p class="text-[11px] sm:text-xs uppercase tracking-widest text-gray-300 mt-1">Packages Delivered</p>
             </div>
             <div class="border-r border-blue-800/60 last:border-none">
                 <p class="text-3xl lg:text-4xl font-black text-brandRed">99.8%</p>
-                <p class="text-xs uppercase tracking-widest text-gray-300 mt-1">On-Time Success</p>
+                <p class="text-[11px] sm:text-xs uppercase tracking-widest text-gray-300 mt-1">On-Time Success</p>
             </div>
             <div>
                 <p class="text-3xl lg:text-4xl font-black text-brandRed">24/7</p>
-                <p class="text-xs uppercase tracking-widest text-gray-300 mt-1">Customer Support</p>
+                <p class="text-[11px] sm:text-xs uppercase tracking-widest text-gray-300 mt-1">Customer Support</p>
             </div>
         </div>
     </section>
 
     <!-- Core Services Section -->
-    <section class="py-20 px-4 max-w-7xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16">
+    <section class="py-16 sm:py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
             <span class="text-xs font-bold text-brandRed uppercase tracking-widest">Our Expertise</span>
             <h2 class="text-3xl lg:text-4xl font-extrabold text-brandBlue mt-2">Comprehensive Shipping Solutions</h2>
-            <p class="text-gray-600 mt-2">Tailored logistics models designed for maximum security, speed, and cost efficiency.</p>
+            <p class="text-gray-600 text-sm sm:text-base mt-2">Tailored logistics models designed for maximum security, speed, and cost efficiency.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
                 <div>
-                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-xl flex items-center justify-center text-2xl mb-6">
+                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">
                         <i class="fa fa-plane-departure"></i>
                     </div>
                     <h3 class="text-xl font-bold text-brandBlue mb-3">Air Freight Express</h3>
@@ -159,9 +177,9 @@
                 </a>
             </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
                 <div>
-                    <div class="w-14 h-14 bg-blue-100 text-brandBlue rounded-xl flex items-center justify-center text-2xl mb-6">
+                    <div class="w-14 h-14 bg-blue-100 text-brandBlue rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">
                         <i class="fa fa-ship"></i>
                     </div>
                     <h3 class="text-xl font-bold text-brandBlue mb-3">Ocean Freight Cargo</h3>
@@ -172,9 +190,9 @@
                 </a>
             </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-2xl border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300 flex flex-col justify-between">
                 <div>
-                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-xl flex items-center justify-center text-2xl mb-6">
+                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">
                         <i class="fa fa-truck-fast"></i>
                     </div>
                     <h3 class="text-xl font-bold text-brandBlue mb-3">Ground Trucking Delivery</h3>
@@ -188,17 +206,17 @@
     </section>
 
     <!-- Call to Action Banner -->
-    <section class="bg-gradient-to-r from-brandRed to-red-700 text-white py-16 px-4">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <section class="bg-gradient-to-r from-brandRed to-red-700 text-white py-14 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div>
-                <h3 class="text-3xl font-black">Ready to ship your cargo globally?</h3>
-                <p class="text-red-100 mt-2 text-sm md:text-base">Get instant rate approximations or speak directly with our freight forwarding agents.</p>
+                <h3 class="text-2xl sm:text-3xl font-black">Ready to ship your cargo globally?</h3>
+                <p class="text-red-100 mt-2 text-sm sm:text-base">Get instant rate approximations or speak directly with our freight forwarding agents.</p>
             </div>
-            <div class="flex space-x-4">
-                <a href="quote.html" class="bg-brandDark hover:bg-gray-900 text-white px-8 py-3.5 rounded-lg font-bold transition shadow-md">
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                <a href="quote.html" class="bg-brandDark hover:bg-gray-900 text-white px-8 py-3.5 rounded-xl font-bold transition shadow-md text-center">
                     Get Free Quote
                 </a>
-                <a href="contact.html" class="bg-white text-brandRed hover:bg-gray-100 px-8 py-3.5 rounded-lg font-bold transition">
+                <a href="contact.html" class="bg-white text-brandRed hover:bg-gray-100 px-8 py-3.5 rounded-xl font-bold transition text-center">
                     Contact Us
                 </a>
             </div>
@@ -207,7 +225,7 @@
 
     <!-- Footer -->
     <footer class="bg-brandDark text-white py-14 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
             <div>
                 <img src="logo global.png" alt="Logo" class="h-9 w-auto brightness-0 invert mb-4">
                 <p class="text-gray-400 text-sm leading-relaxed">Global Touch Courier handles worldwide cargo logistics with absolute transparency, efficiency, and automated tracking infrastructure.</p>
@@ -235,8 +253,8 @@
                 <h5 class="font-bold text-base mb-4 text-brandRed uppercase tracking-wider">Newsletter</h5>
                 <p class="text-sm text-gray-400 mb-3">Subscribe to industry insights and seasonal shipping discounts.</p>
                 <div class="flex">
-                    <input type="email" placeholder="Enter email address" class="bg-gray-800 border border-gray-700 px-3 py-2.5 rounded-l text-sm focus:outline-none text-white w-full">
-                    <button class="bg-brandRed hover:bg-red-700 px-4 rounded-r text-sm font-bold transition"><i class="fa fa-paper-plane"></i></button>
+                    <input type="email" placeholder="Enter email address" class="bg-gray-800 border border-gray-700 px-3 py-2.5 rounded-l-xl text-sm focus:outline-none text-white w-full">
+                    <button class="bg-brandRed hover:bg-red-700 px-4 rounded-r-xl text-sm font-bold transition"><i class="fa fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
@@ -245,8 +263,24 @@
         </div>
     </footer>
 
-    <!-- Interactive Tracking Engine Script -->
+    <!-- Interactive Scripts -->
     <script>
+        // Mobile Menu Toggle Function
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // Tracking Database Simulation
         const trackingDatabase = {
             "GT-984210": {
                 sender: "Sarah Jenkins (New York, USA)",
@@ -322,7 +356,7 @@
             } else {
                 resultDiv.innerHTML = `
                     <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs">
-                        <i class="fa fa-circle-exclamation mr-1"></i> No matching package for <strong>${inputVal}</strong>. Check code or try <a href="track.html" class="underline font-bold">advanced tracking</a>.
+                        <i class="fa fa-circle-exclamation mr-1"></i> No matching package for <strong>${inputVal}</strong>. Try <a href="track.html" class="underline font-bold">advanced tracking</a>.
                     </div>
                 `;
             }
