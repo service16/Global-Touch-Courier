@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Global Touch Courier</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#1E3A8A',
+                        brandRed: '#DC2626',
+                        brandDark: '#0F172A'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Login Overlay Screen (Shown by default until logged in) -->
+    <div id="loginScreen" class="fixed inset-0 bg-brandDark z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border-t-4 border-brandRed">
+            <div class="text-center mb-6">
+                <img src="logo global.png" alt="Logo" class="h-10 mx-auto mb-3 object-contain">
+                <h2 class="text-2xl font-black text-brandBlue">Admin Authentication</h2>
+                <p class="text-xs text-gray-500 mt-1">Enter administrative credentials to manage shipments</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Username</label>
+                    <input type="text" id="adminUser" required placeholder="admin" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandBlue">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Password</label>
+                    <input type="password" id="adminPass" required placeholder="••••••••" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandBlue">
+                </div>
+                <div id="loginError" class="text-red-600 text-xs hidden font-semibold text-center">Invalid username or password. (Try admin / password123)</div>
+                <button type="submit" class="w-full bg-brandRed hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-500/20 text-sm">
+                    Access Dashboard
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <a href="index.html" class="text-xs text-gray-500 hover:text-brandRed transition">&larr; Return to Public Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Header -->
+    <header class="bg-brandDark text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="logo global.png" alt="Logo" class="h-9 w-auto brightness-0 invert object-contain">
+                <span class="bg-brandRed text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Admin Panel</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html" target="_blank" class="text-xs text-gray-300 hover:text-white transition"><i class="fa fa-globe mr-1"></i> View Live Site</a>
+                <button onclick="handleLogout()" class="bg-gray-800 hover:bg-red-900 text-gray-200 px-3.5 py-2 rounded-xl text-xs font-semibold transition">
+                    <i class="fa fa-right-from-bracket mr-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+        
+        <!-- Top Stats / Actions Bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
+            <div>
+                <h1 class="text-2xl font-black text-brandBlue">Shipment Control Center</h1>
+                <p class="text-xs text-gray-500 mt-0.5">Create custom consignment tracking numbers and monitor dispatch history logs.</p>
+            </div>
+            <button onclick="openCreateModal()" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-3 rounded-xl font-bold text-sm transition shadow-md flex items-center">
+                <i class="fa fa-plus-circle mr-2"></i> Create New Shipment
+            </button>
+        </div>
+
+        <!-- Existing Shipments Table Card -->
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-bold text-brandBlue text-base">Active Consignments Database</h3>
+                <span id="shipmentCount" class="text-xs bg-blue-50 text-brandBlue font-bold px-2.5 py-1 rounded-full">0 Shipments</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-500 text-[11px] uppercase tracking-wider border-b border-gray-100">
+                            <th class="p-4 font-bold">Tracking No.</th>
+                            <th class="p-4 font-bold">Sender / Recipient</th>
+                            <th class="p-4 font-bold">Service Type</th>
+                            <th class="p-4 font-bold">Status</th>
+                            <th class="p-4 font-bold">Current Location</th>
+                            <th class="p-4 font-bold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminShipmentTableBody" class="divide-y divide-gray-100 text-xs">
+                        <!-- Dynamic Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Shipment Modal / Drawer -->
+    <div id="shipmentModal" class="fixed inset-0 bg-brandDark/70 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 border-t-4 border-brandBlue my-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-brandBlue">Create New Shipment Record</h3>
+                <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold"><i class="fa fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="saveNewShipment(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Tracking Number</label>
+                        <div class="flex">
+                            <input type="text" id="newCode" required placeholder="e.g. GT-889922" class="flex-1 border border-gray-300 rounded-l-xl px-3 py-2.5 text-xs font-mono uppercase focus:outline-none focus:border-brandBlue">
+                            <button type="button" onclick="generateRandomCode()" class="bg-gray-100 hover:bg-gray-200 border border-l-0 border-gray-300 px-3 rounded-r-xl text-xs font-bold text-gray-600">Auto</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Service Type</label>
+                        <select id="newService" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                            <option value="Air Freight Express">Air Freight Express</option>
+                            <option value="Ocean Freight Cargo">Ocean Freight Cargo</option>
+                            <option value="Ground Trucking Delivery">Ground Trucking Delivery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Sender Name & Location</label>
+                        <input type="text" id="newSender" required placeholder="John Doe (New York, USA)" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Recipient Name & Location</label>
+                        <input type="text" id="newRecipient" required placeholder="Jane Smith (London, UK)" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Current Package Status</label>
+                        <select id="newStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                            <option value="In Transit">In Transit</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Order Processed">Order Processed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Current Location Description</label>
+                        <input type="text" id="newLocation" required placeholder="JFK International Hub, New York" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Estimated Delivery Date/Time</label>
+                    <input type="text" id="newDelivery" required placeholder="June 25, 2026" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                </div>
+
+                <div class="border-t pt-4 mt-4">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Initial Activity Log Entry</label>
+                    <input type="text" id="newInitialLog" required placeholder="Package registered and processed at origin facility" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t">
+                    <button type="button" onclick="closeCreateModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl font-bold text-xs transition">Cancel</button>
+                    <button type="submit" class="bg-brandRed hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md">Publish Shipment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-400 mt-auto">
+        &copy; 2026 Global Touch Courier. Secure Administrative Portal.
+    </footer>
+
+    <!-- Admin Logic Script -->
+    <script>
+        // Default admin credentials check
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('adminUser').value.trim();
+            const p = document.getElementById('adminPass').value.trim();
+
+            if (u === 'admin' && p === 'password123') {
+                localStorage.setItem('gt_admin_logged', 'true');
+                document.getElementById('loginScreen').classList.add('hidden');
+                loadAdminShipments();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('gt_admin_logged');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        // Check login state on load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('gt_admin_logged') === 'true') {
+                document.getElementById('loginScreen').classList.add('hidden');
+            }
+            loadAdminShipments();
+        });
+
+        // Load & Save Data Shared with Public via localStorage
+        function getDatabase() {
+            const customData = localStorage.getItem('gt_shipments_db');
+            if (customData) {
+                return JSON.parse(customData);
+            }
+            // Default built-in mock database
+            const defaultDb = {
+                "GT-984210": {
+                    sender: "Sarah Jenkins (New York, USA)",
+                    recipient: "Michael Chen (London, UK)",
+                    service: "Air Freight Express",
+                    status: "In Transit",
+                    currentLocation: "Heathrow Hub, London",
+                    estimatedDelivery: "June 20, 2026",
+                    history: [
+                        { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
+                        { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
+                        { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
+                    ]
+                },
+                "GT-102938": {
+                    sender: "TechCorp Logistics (Berlin, Germany)",
+                    recipient: "Global Solutions (Paris, France)",
+                    service: "Ground Road Delivery",
+                    status: "Out for Delivery",
+                    currentLocation: "Paris Local Distribution Centre",
+                    estimatedDelivery: "Today by 4:00 PM",
+                    history: [
+                        { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
+                        { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
+                    ]
+                }
+            };
+            localStorage.setItem('gt_shipments_db', JSON.stringify(defaultDb));
+            return defaultDb;
+        }
+
+        function saveDatabase(db) {
+            localStorage.setItem('gt_shipments_db', JSON.stringify(db));
+        }
+
+        function loadAdminShipments() {
+            const db = getDatabase();
+            const tbody = document.getElementById('adminShipmentTableBody');
+            const countBadge = document.getElementById('shipmentCount');
+            
+            tbody.innerHTML = '';
+            const keys = Object.keys(db);
+            countBadge.innerText = `${keys.length} Shipments`;
+
+            if (keys.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No shipments found in database. Create one above.</td></tr>`;
+                return;
+            }
+
+            keys.forEach(code => {
+                const item = db[code];
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/80 transition">
+                        <td class="p-4 font-mono font-bold text-brandBlue">${code}</td>
+                        <td class="p-4">
+                            <span class="block text-gray-900 font-semibold">${item.sender}</span>
+                            <span class="block text-[10px] text-gray-500">To: ${item.recipient}</span>
+                        </td>
+                        <td class="p-4 text-gray-600">${item.service}</td>
+                        <td class="p-4">
+                            <span class="bg-red-50 text-brandRed font-bold px-2.5 py-1 rounded text-[10px]">${item.status}</span>
+                        </td>
+                        <td class="p-4 text-gray-600">${item.currentLocation}</td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="deleteShipment('${code}')" class="bg-red-50 hover:bg-red-100 text-brandRed p-2 rounded-lg transition" title="Delete Shipment"><i class="fa fa-trash-can"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openCreateModal() {
+            document.getElementById('shipmentModal').classList.remove('hidden');
+            generateRandomCode();
+        }
+
+        function closeCreateModal() {
+            document.getElementById('shipmentModal').classList.add('hidden');
+        }
+
+        function generateRandomCode() {
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('newCode').value = `GT-${randomNum}`;
+        }
+
+        function saveNewShipment(e) {
+            e.preventDefault();
+            const code = document.getElementById('newCode').value.trim().toUpperCase();
+            const service = document.getElementById('newService').value;
+            const sender = document.getElementById('newSender').value.trim();
+            const recipient = document.getElementById('newRecipient').value.trim();
+            const status = document.getElementById('newStatus').value;
+            const location = document.getElementById('newLocation').value.trim();
+            const delivery = document.getElementById('newDelivery').value.trim();
+            const initialLog = document.getElementById('newInitialLog').value.trim();
+
+            const db = getDatabase();
+
+            const currentDateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' - ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            db[code] = {
+                sender: sender,
+                recipient: recipient,
+                service: service,
+                status: status,
+                currentLocation: location,
+                estimatedDelivery: delivery,
+                history: [
+                    { date: currentDateStr, status: initialLog, location: location }
+                ]
+            };
+
+            saveDatabase(db);
+            closeCreateManager();
+            loadAdminShipments();
+            alert(`Shipment ${code} successfully published and is now live for tracking!`);
+            document.getElementById('shipmentModal').classList.add('hidden');
+        }
+
+        function deleteShipment(code) {
+            if (confirm(`Are you sure you want to delete shipment record ${code}?`)) {
+                const db = getDatabase();
+                delete db[code];
+                saveDatabase(db);
+                loadAdminShipments();
+            }
+        }
+    </script>
+</body>
+</html>
