@@ -75,7 +75,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
             <div>
                 <h1 class="text-2xl font-black text-brandBlue">Shipment Control Center</h1>
-                <p class="text-xs text-gray-500 mt-0.5">Create custom consignment tracking numbers, update dispatch logs, and manage statuses.</p>
+                <p class="text-xs text-gray-500 mt-0.5">Create custom consignment tracking numbers, update dispatch logs, and manage professional statuses.</p>
             </div>
             <button onclick="openCreateModal()" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-3 rounded-xl font-bold text-sm transition shadow-md flex items-center">
                 <i class="fa fa-plus-circle mr-2"></i> Create New Shipment
@@ -93,7 +93,7 @@
                     <thead>
                         <tr class="bg-gray-50 text-gray-500 text-[11px] uppercase tracking-wider border-b border-gray-100">
                             <th class="p-4 font-bold">Tracking No.</th>
-                            <th class="p-4 font-bold">Sender / Recipient</th>
+                            <th class="p-4 font-bold">Sender / Receiver</th>
                             <th class="p-4 font-bold">Service Type</th>
                             <th class="p-4 font-bold">Status</th>
                             <th class="p-4 font-bold">Current Location</th>
@@ -110,13 +110,14 @@
 
     <!-- Create / Edit Shipment Modal -->
     <div id="shipmentModal" class="fixed inset-0 bg-brandDark/70 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 border-t-4 border-brandBlue my-8">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 border-t-4 border-brandBlue my-8 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="modalTitle" class="text-xl font-bold text-brandBlue">Create New Shipment Record</h3>
                 <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold"><i class="fa fa-xmark"></i></button>
             </div>
 
             <form onsubmit="saveShipmentData(event)" class="space-y-4">
+                <!-- Tracking Number & Service Type -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Tracking Number</label>
@@ -136,27 +137,59 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Sender Name & Location</label>
-                        <input type="text" id="newSender" required placeholder="John Doe (New York, USA)" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Recipient Name & Location</label>
-                        <input type="text" id="newRecipient" required placeholder="Jane Smith (London, UK)" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                <!-- Sender Info Section -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
+                    <h4 class="text-xs font-black uppercase text-brandBlue tracking-wider"><i class="fa fa-user-tie mr-1"></i> Sender Details</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Sender Name</label>
+                            <input type="text" id="newSenderName" required placeholder="John Doe" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Sender Country</label>
+                            <input type="text" id="newSenderCountry" required placeholder="United States (USA)" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
                     </div>
                 </div>
 
+                <!-- Receiver Info Section -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
+                    <h4 class="text-xs font-black uppercase text-brandBlue tracking-wider"><i class="fa fa-map-location-dot mr-1"></i> Receiver Details</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Receiver Name</label>
+                            <input type="text" id="newReceiverName" required placeholder="Jane Smith" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Receiver Country</label>
+                            <input type="text" id="newReceiverCountry" required placeholder="United Kingdom (UK)" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Receiver House Address</label>
+                            <input type="text" id="newReceiverAddress" required placeholder="14 Westminster Bridge Rd, London" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Receiver Email (for updates)</label>
+                            <input type="email" id="newReceiverEmail" required placeholder="janesmith@example.com" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status & Current Location -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Current Package Status</label>
                         <select id="newStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
-                            <option value="Order Processed">Order Processed</option>
-                            <option value="In Transit">In Transit</option>
+                            <option value="Order Processed">Order Processed / Info Received</option>
+                            <option value="Picked Up">Picked Up from Sender</option>
+                            <option value="In Transit">In Transit / Departed Facility</option>
+                            <option value="Arrived at Sorting Hub">Arrived at Sorting Hub</option>
+                            <option value="Held in Customs">Held in Customs Clearance</option>
                             <option value="Out for Delivery">Out for Delivery</option>
-                            <option value="Delivered">Delivered</option>
-                            <option value="Held in Customs">Held in Customs</option>
-                            <option value="Exception / Delayed">Exception / Delayed</option>
+                            <option value="Delivered">Successfully Delivered</option>
+                            <option value="Exception / Delayed">Delivery Exception / Delayed</option>
                         </select>
                     </div>
                     <div>
@@ -165,10 +198,11 @@
                     </div>
                 </div>
 
+                <!-- Checkpoint Log Entry -->
                 <div class="border-t pt-4 mt-4 bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
                     <label class="block text-xs font-bold uppercase tracking-wider text-brandBlue mb-1"><i class="fa fa-clock-rotate-left mr-1"></i> Add Checkpoint Log Entry</label>
-                    <p class="text-[11px] text-gray-500 mb-2">This will append a new event update to the shipment's live tracking timeline.</p>
-                    <input type="text" id="newLogMessage" placeholder="e.g. Departed sorting facility or Arrived at destination hub" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                    <p class="text-[11px] text-gray-500 mb-2">This appends a new event update to the shipment's live tracking timeline.</p>
+                    <input type="text" id="newLogMessage" placeholder="e.g. Package scanned and sorted at regional export facility" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t">
@@ -231,12 +265,15 @@
                     const item = documentSnapshot.data();
                     cachedShipments[code] = item;
 
+                    const senderDisplay = `${item.senderName || 'N/A'} <span class="text-[10px] text-gray-400">(${item.senderCountry || 'N/A'})</span>`;
+                    const receiverDisplay = `${item.receiverName || 'N/A'} <span class="text-[10px] text-gray-400">(${item.receiverCountry || 'N/A'})</span>`;
+
                     tbody.innerHTML += `
                         <tr class="hover:bg-gray-50/85 transition">
                             <td class="p-4 font-mono font-bold text-brandBlue">${code}</td>
                             <td class="p-4">
-                                <span class="block text-gray-900 font-semibold">${item.sender || 'N/A'}</span>
-                                <span class="block text-[10px] text-gray-500">To: ${item.recipient || 'N/A'}</span>
+                                <span class="block text-gray-900 font-semibold">From: ${senderDisplay}</span>
+                                <span class="block text-gray-600 text-[11px]">To: ${receiverDisplay}</span>
                             </td>
                             <td class="p-4 text-gray-600">${item.service || 'N/A'}</td>
                             <td class="p-4">
@@ -263,8 +300,12 @@
             e.preventDefault();
             const code = document.getElementById('newCode').value.trim().toUpperCase();
             const service = document.getElementById('newService').value;
-            const sender = document.getElementById('newSender').value.trim();
-            const recipient = document.getElementById('newRecipient').value.trim();
+            const senderName = document.getElementById('newSenderName').value.trim();
+            const senderCountry = document.getElementById('newSenderCountry').value.trim();
+            const receiverName = document.getElementById('newReceiverName').value.trim();
+            const receiverCountry = document.getElementById('newReceiverCountry').value.trim();
+            const receiverAddress = document.getElementById('newReceiverAddress').value.trim();
+            const receiverEmail = document.getElementById('newReceiverEmail').value.trim();
             const status = document.getElementById('newStatus').value;
             const location = document.getElementById('newLocation').value.trim();
             const logMessage = document.getElementById('newLogMessage').value.trim();
@@ -295,8 +336,15 @@
                 }
 
                 const shipmentData = {
-                    sender: sender,
-                    recipient: recipient,
+                    senderName: senderName,
+                    senderCountry: senderCountry,
+                    receiverName: receiverName,
+                    receiverCountry: receiverCountry,
+                    receiverAddress: receiverAddress,
+                    receiverEmail: receiverEmail,
+                    // Keep fallback strings for old components if any
+                    sender: `${senderName} (${senderCountry})`,
+                    recipient: `${receiverName} (${receiverCountry})`,
                     service: service,
                     status: status,
                     currentLocation: location,
@@ -334,8 +382,12 @@
             document.getElementById('newCode').disabled = false;
             document.getElementById('autoCodeBtn').style.display = 'block';
             document.getElementById('newService').value = 'Air Freight Express';
-            document.getElementById('newSender').value = '';
-            document.getElementById('newRecipient').value = '';
+            document.getElementById('newSenderName').value = '';
+            document.getElementById('newSenderCountry').value = '';
+            document.getElementById('newReceiverName').value = '';
+            document.getElementById('newReceiverCountry').value = '';
+            document.getElementById('newReceiverAddress').value = '';
+            document.getElementById('newReceiverEmail').value = '';
             document.getElementById('newStatus').value = 'Order Processed';
             document.getElementById('newLocation').value = '';
             document.getElementById('newLogMessage').value = 'Package registered and processed at origin facility';
@@ -352,8 +404,12 @@
             document.getElementById('newCode').disabled = true;
             document.getElementById('autoCodeBtn').style.display = 'none';
             document.getElementById('newService').value = item.service || 'Air Freight Express';
-            document.getElementById('newSender').value = item.sender || '';
-            document.getElementById('newRecipient').value = item.recipient || '';
+            document.getElementById('newSenderName').value = item.senderName || '';
+            document.getElementById('newSenderCountry').value = item.senderCountry || '';
+            document.getElementById('newReceiverName').value = item.receiverName || '';
+            document.getElementById('newReceiverCountry').value = item.receiverCountry || '';
+            document.getElementById('newReceiverAddress').value = item.receiverAddress || '';
+            document.getElementById('newReceiverEmail').value = item.receiverEmail || '';
             document.getElementById('newStatus').value = item.status || 'In Transit';
             document.getElementById('newLocation').value = item.currentLocation || '';
             document.getElementById('newLogMessage').value = '';
@@ -413,7 +469,7 @@
         function handleLogout() {
             localStorage.removeItem('gt_admin_logged');
             clearTimeout(inactivityTimer);
-            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
