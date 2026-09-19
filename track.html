@@ -87,6 +87,134 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        // Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyARw8rUOLiHMR2A6EYONbMP1ncJN8UbJI",
+            authDomain: "global-touch-courier.firebaseapp.com",
+            projectId: "global-touch-courier",
+            storageBucket: "global-touch-courier.firebasestorage.app",
+            messagingSenderId: "52333288615",
+            appId: "1:52333288615:web:1dbbc2e3aefc49be22cf82",
+            measurementId: "G-GGEP3GXCPL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Expose executeAdvancedTracking globally so HTML buttons can invoke it
+        window.executeAdvancedTracking = async function() {
+            const codeInput = document.getElementById('mainTrackingInput').value.trim().toUpperCase();
+            const resultContainer = document.getElementById('advancedTrackingResult');
+
+            if (!codeInput) {
+                alert("Please enter a consignment code.");
+                return;
+            }
+
+            resultContainer.innerHTML = `
+                <div class="bg-white p-8 rounded-3xl shadow-lg text-center text-gray-500">
+                    <i class="fa fa-circle-notch fa-spin text-2xl text-brandBlue mb-2"></i>
+                    <p class="text-sm">Fetching real-time tracking data from global database...</p>
+                </div>
+            `;
+            resultContainer.classList.remove('hidden');
+
+            try {
+                const docRef = doc(db, "shipments", codeInput);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    let timelineHtml = '';
+                    
+                    if (data.history && Array.isArray(data.history)) {
+                        data.history.forEach((h, index) => {
+                            const isLatest = index === data.history.length - 1;
+                            timelineHtml += `
+                                <div class="relative pl-8 pb-6 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
+                                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'} flex items-center justify-center text-white text-[9px]">
+                                        ${isLatest ? '<i class="fa fa-check"></i>' : ''}
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-400">${h.date}</p>
+                                    <p class="text-sm font-bold text-brandBlue mt-0.5">${h.status}</p>
+                                    <p class="text-xs text-gray-600 mt-1"><i class="fa fa-map-marker-alt text-brandRed mr-1"></i> Location: <strong>${h.location}</strong></p>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    resultContainer.innerHTML = `
+                        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-6 gap-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Tracking Code</span>
+                                    <h2 class="text-2xl font-black text-brandBlue font-mono">${codeInput}</h2>
+                                </div>
+                                <span class="bg-red-50 text-brandRed font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wide border border-red-100">
+                                    <i class="fa fa-circle-notch fa-spin mr-1.5"></i> ${data.status}
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 border-b border-gray-100 text-xs">
+                                <div>
+                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Sender Details</span>
+                                    <strong class="text-gray-900 text-sm">${data.sender}</strong>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Recipient Details</span>
+                                    <strong class="text-gray-900 text-sm">${data.recipient}</strong>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Service Type</span>
+                                    <strong class="text-gray-900 text-sm">${data.service}</strong>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 text-xs">
+                                <div class="bg-blue-50/60 p-4 rounded-2xl border border-blue-100">
+                                    <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Current Location</span>
+                                    <strong class="text-brandBlue text-sm"><i class="fa fa-location-arrow text-brandRed mr-1"></i> ${data.currentLocation}</strong>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                                    <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Estimated Delivery</span>
+                                    <strong class="text-gray-900 text-sm"><i class="fa fa-calendar-days text-brandBlue mr-1"></i> ${data.estimatedDelivery}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
+                            <h3 class="text-lg font-bold text-brandBlue mb-6">Consignment Checkpoint Logs</h3>
+                            <div class="space-y-1">
+                                ${timelineHtml}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContainer.innerHTML = `
+                        <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center text-sm">
+                            <i class="fa fa-circle-exclamation text-xl mb-2 block"></i>
+                            No shipment record found matching code <strong>${codeInput}</strong>. Please check your number or verify with support.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error fetching shipment:", error);
+                resultContainer.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center text-sm">
+                        <i class="fa fa-triangle-exclamation text-xl mb-2 block"></i>
+                        An error occurred while connecting to the global database. Please try again.
+                    </div>
+                `;
+            }
+        };
+    </script>
+
     <!-- Interactive Scripts -->
     <script>
         function toggleMobileMenu() {
@@ -103,134 +231,16 @@
             }
         }
 
-        function getPublicDatabase() {
-            const customData = localStorage.getItem('gt_shipments_db');
-            if (customData) {
-                return JSON.parse(customData);
-            }
-            return {
-                "GT-984210": {
-                    sender: "Sarah Jenkins (New York, USA)",
-                    recipient: "Michael Chen (London, UK)",
-                    service: "Air Freight Express",
-                    status: "In Transit",
-                    currentLocation: "Heathrow Hub, London",
-                    estimatedDelivery: "June 20, 2026",
-                    history: [
-                        { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
-                        { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
-                        { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
-                    ]
-                },
-                "GT-102938": {
-                    sender: "TechCorp Logistics (Berlin, Germany)",
-                    recipient: "Global Solutions (Paris, France)",
-                    service: "Ground Road Delivery",
-                    status: "Out for Delivery",
-                    currentLocation: "Paris Local Distribution Centre",
-                    estimatedDelivery: "Today by 4:00 PM",
-                    history: [
-                        { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
-                        { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
-                    ]
-                }
-            };
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const codeParam = urlParams.get('code');
             if (codeParam) {
                 document.getElementById('mainTrackingInput').value = codeParam;
-                executeAdvancedTracking();
+                if (window.executeAdvancedTracking) {
+                    window.executeAdvancedTracking();
+                }
             }
         });
-
-        function executeAdvancedTracking() {
-            const codeInput = document.getElementById('mainTrackingInput').value.trim().toUpperCase();
-            const resultContainer = document.getElementById('advancedTrackingResult');
-
-            if (!codeInput) {
-                alert("Please enter a consignment code.");
-                return;
-            }
-
-            const db = getPublicDatabase();
-            const data = db[codeInput];
-
-            if (data) {
-                let timelineHtml = '';
-                data.history.forEach((h, index) => {
-                    const isLatest = index === data.history.length - 1;
-                    timelineHtml += `
-                        <div class="relative pl-8 pb-6 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
-                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'} flex items-center justify-center text-white text-[9px]">
-                                ${isLatest ? '<i class="fa fa-check"></i>' : ''}
-                            </div>
-                            <p class="text-xs font-bold text-gray-400">${h.date}</p>
-                            <p class="text-sm font-bold text-brandBlue mt-0.5">${h.status}</p>
-                            <p class="text-xs text-gray-600 mt-1"><i class="fa fa-map-marker-alt text-brandRed mr-1"></i> Location: <strong>${h.location}</strong></p>
-                        </div>
-                    `;
-                });
-
-                resultContainer.innerHTML = `
-                    <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-6 gap-4">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Tracking Code</span>
-                                <h2 class="text-2xl font-black text-brandBlue font-mono">${codeInput}</h2>
-                            </div>
-                            <span class="bg-red-50 text-brandRed font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wide border border-red-100">
-                                <i class="fa fa-circle-notch fa-spin mr-1.5"></i> ${data.status}
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 border-b border-gray-100 text-xs">
-                            <div>
-                                <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Sender Details</span>
-                                <strong class="text-gray-900 text-sm">${data.sender}</strong>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Recipient Details</span>
-                                <strong class="text-gray-900 text-sm">${data.recipient}</strong>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Service Type</span>
-                                <strong class="text-gray-900 text-sm">${data.service}</strong>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 text-xs">
-                            <div class="bg-blue-50/60 p-4 rounded-2xl border border-blue-100">
-                                <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Current Location</span>
-                                <strong class="text-brandBlue text-sm"><i class="fa fa-location-arrow text-brandRed mr-1"></i> ${data.currentLocation}</strong>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
-                                <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Estimated Delivery</span>
-                                <strong class="text-gray-900 text-sm"><i class="fa fa-calendar-days text-brandBlue mr-1"></i> ${data.estimatedDelivery}</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
-                        <h3 class="text-lg font-bold text-brandBlue mb-6">Consignment Checkpoint Logs</h3>
-                        <div class="space-y-1">
-                            ${timelineHtml}
-                        </div>
-                    </div>
-                `;
-            } else {
-                resultContainer.innerHTML = `
-                    <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center text-sm">
-                        <i class="fa fa-circle-exclamation text-xl mb-2 block"></i>
-                        No shipment record found matching code <strong>${codeInput}</strong>. Please check your number or verify with support.
-                    </div>
-                `;
-            }
-
-            resultContainer.classList.remove('hidden');
-        }
     </script>
 </body>
 </html>
