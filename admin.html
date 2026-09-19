@@ -182,14 +182,34 @@
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Current Package Status</label>
                         <select id="newStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
-                            <option value="Order Processed">Order Processed / Info Received</option>
-                            <option value="Picked Up">Picked Up from Sender</option>
-                            <option value="In Transit">In Transit / Departed Facility</option>
-                            <option value="Arrived at Sorting Hub">Arrived at Sorting Hub</option>
-                            <option value="Held in Customs">Held in Customs Clearance</option>
-                            <option value="Out for Delivery">Out for Delivery</option>
-                            <option value="Delivered">Successfully Delivered</option>
-                            <option value="Exception / Delayed">Delivery Exception / Delayed</option>
+                            <optgroup label="Initial Phase">
+                                <option value="Order Processed">Order Processed / Info Received</option>
+                                <option value="Picked Up">Picked Up from Sender</option>
+                            </optgroup>
+                            <optgroup label="In Transit Phase">
+                                <option value="In Transit">In Transit / Departed Facility</option>
+                                <option value="Arrived at Sorting Hub">Arrived at Sorting Hub</option>
+                                <option value="Departed Export Hub">Departed Export Hub</option>
+                                <option value="Arrived at Destination Country">Arrived at Destination Country</option>
+                            </optgroup>
+                            <optgroup label="Customs Inspection Phase">
+                                <option value="Submitted to Customs">Submitted to Customs</option>
+                                <option value="Held in Customs">Held in Customs (Clearance Required)</option>
+                                <option value="Customs Inspection in Progress">Customs Inspection in Progress</option>
+                                <option value="Customs Duties Pending">Customs Duties / Taxes Pending</option>
+                                <option value="Customs Cleared">Customs Cleared Successfully</option>
+                            </optgroup>
+                            <optgroup label="Final Delivery Phase">
+                                <option value="Received at Local Depot">Received at Local Delivery Depot</option>
+                                <option value="Out for Delivery">Out for Delivery</option>
+                                <option value="Delivery Attempt Failed">Delivery Attempt Failed / Consignee Unavailable</option>
+                                <option value="Ready for Pickup">Ready for Local Hub Pickup</option>
+                                <option value="Delivered">Successfully Delivered</option>
+                            </optgroup>
+                            <optgroup label="Exceptions">
+                                <option value="Exception / Delayed">Exception / Weather or Operational Delay</option>
+                                <option value="Address Issue">Incorrect Address / Delivery Hold</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div>
@@ -202,7 +222,7 @@
                 <div class="border-t pt-4 mt-4 bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
                     <label class="block text-xs font-bold uppercase tracking-wider text-brandBlue mb-1"><i class="fa fa-clock-rotate-left mr-1"></i> Add Checkpoint Log Entry</label>
                     <p class="text-[11px] text-gray-500 mb-2">This appends a new event update to the shipment's live tracking timeline.</p>
-                    <input type="text" id="newLogMessage" placeholder="e.g. Package scanned and sorted at regional export facility" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                    <input type="text" id="newLogMessage" placeholder="e.g. Package held by customs pending clearance documentation" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t">
@@ -342,7 +362,6 @@
                     receiverCountry: receiverCountry,
                     receiverAddress: receiverAddress,
                     receiverEmail: receiverEmail,
-                    // Keep fallback strings for old components if any
                     sender: `${senderName} (${senderCountry})`,
                     recipient: `${receiverName} (${receiverCountry})`,
                     service: service,
@@ -469,7 +488,7 @@
         function handleLogout() {
             localStorage.removeItem('gt_admin_logged');
             clearTimeout(inactivityTimer);
-            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
