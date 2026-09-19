@@ -459,8 +459,8 @@
                 clearTimeout(inactivityTimer);
                 inactivityTimer = setTimeout(() => {
                     handleLogout();
-                    alert("Admin session expired due to 2 minutes of inactivity.");
-                }, 120000);
+                    alert("Admin session expired due to 2 minutes of inactivity. Please enter your password again.");
+                }, 120000); // 2 minutes
             }
         }
 
@@ -476,6 +476,8 @@
             if (u === 'admin' && p === 'Globaltouch') {
                 localStorage.setItem('gt_admin_logged', 'true');
                 document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminPass').value = ''; // clear password field for security
+                document.getElementById('loginError').classList.add('hidden');
                 if (window.loadAdminShipments) {
                     window.loadAdminShipments();
                 }
@@ -495,6 +497,8 @@
             if (localStorage.getItem('gt_admin_logged') === 'true') {
                 document.getElementById('loginScreen').classList.add('hidden');
                 resetInactivityTimer();
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
             }
         });
     </script>
