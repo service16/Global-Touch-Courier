@@ -23,76 +23,142 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Navigation Header -->
-    <header class="bg-brandRed shadow-md sticky top-0 z-50 border-b border-red-800">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3 bg-gray-900/90 px-3.5 py-2 rounded-xl border border-gray-800 shadow-md">
-                <img src="logo global.png" alt="Logo" class="h-9 sm:h-11 w-auto object-contain brightness-0 invert">
-            </a>
-            
-            <nav class="hidden md:flex space-x-8 font-semibold text-sm">
-                <a href="index.html" class="text-red-100 hover:text-white transition">Home</a>
-                <a href="services.html" class="text-red-100 hover:text-white transition">Services</a>
-                <a href="track.html" class="text-white hover:text-gray-200 transition">Track Shipment</a>
-                <a href="quote.html" class="text-red-100 hover:text-white transition">Get a Quote</a>
-                <a href="contact.html" class="text-red-100 hover:text-white transition">Contact Us</a>
+    <!-- Top Navigation Header -->
+    <header class="bg-brandRed text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="logo global.png" alt="Global Touch Courier" class="h-9 w-auto bg-white p-1 rounded-lg shadow-sm object-contain">
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold tracking-wide">
+                <a href="index.html" class="hover:text-gray-200 transition">Home</a>
+                <a href="services.html" class="hover:text-gray-200 transition">Services</a>
+                <a href="track.html" class="text-white border-b-2 border-white pb-0.5">Track Shipment</a>
+                <a href="quote.html" class="hover:text-gray-200 transition">Get a Quote</a>
+                <a href="contact.html" class="hover:text-gray-200 transition">Contact Us</a>
             </nav>
-
-            <div class="hidden md:flex items-center space-x-3">
-                <a href="track.html" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition shadow-lg shadow-black/20">
-                    <i class="fa fa-box-open mr-1.5"></i> Track Package
+            <div>
+                <a href="track.html" class="bg-brandDark hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow flex items-center">
+                    <i class="fa fa-box mr-1.5"></i> Track Package
                 </a>
             </div>
-
-            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl focus:outline-none p-1">
-                <i id="menuIcon" class="fa fa-bars"></i>
-            </button>
-        </div>
-
-        <div id="mobileMenu" class="hidden md:hidden bg-brandRed border-t border-red-700 px-4 pt-3 pb-6 space-y-3 shadow-xl">
-            <a href="index.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Home</a>
-            <a href="services.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Services</a>
-            <a href="track.html" class="block text-white font-bold py-2 border-b border-red-700/60">Track Shipment</a>
-            <a href="quote.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Get a Quote</a>
-            <a href="contact.html" class="block text-red-100 font-semibold py-2">Contact Us</a>
         </div>
     </header>
 
-    <!-- Page Title Banner -->
-    <section class="bg-brandDark text-white py-12 px-4 text-center">
-        <h1 class="text-3xl font-black">Consignment Tracker</h1>
-        <p class="text-gray-400 text-xs sm:text-sm mt-2">Monitor exact checkpoint logs and real-time delivery projections.</p>
-    </section>
-
-    <!-- Track Input & Result Section -->
+    <!-- Main Tracking Section -->
     <main class="max-w-4xl mx-auto px-4 py-10 flex-1 w-full space-y-8">
-        <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-gray-200">
-            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Enter Tracking Number</label>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <input type="text" id="mainTrackingInput" placeholder="e.g. GT-984210" class="flex-1 border border-gray-300 rounded-xl px-4 py-3.5 focus:outline-none focus:border-brandBlue uppercase font-mono text-sm">
-                <button onclick="executeAdvancedTracking()" class="bg-brandBlue hover:bg-blue-900 text-white px-8 py-3.5 rounded-xl font-bold transition flex items-center justify-center text-sm shadow-md">
-                    <i class="fa fa-search mr-2"></i> Track Consignment
+        
+        <!-- Search Bar Card (If no code is searched yet) -->
+        <div id="searchCard" class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 text-center space-y-6">
+            <div class="max-w-md mx-auto space-y-2">
+                <span class="bg-red-50 text-brandRed font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Real-Time Tracking System</span>
+                <h1 class="text-2xl sm:text-3xl font-black text-brandBlue">Track Your Consignment</h1>
+                <p class="text-xs text-gray-500">Enter your unique tracking code below to check live transit status and checkpoint logs.</p>
+            </div>
+            
+            <form onsubmit="handlePublicSearch(event)" class="max-w-lg mx-auto flex gap-2">
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                        <i class="fa fa-barcode text-sm"></i>
+                    </span>
+                    <input type="text" id="searchInput" required placeholder="e.g. GT-271019" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-mono uppercase focus:outline-none focus:border-brandBlue focus:bg-white transition">
+                </div>
+                <button type="submit" class="bg-brandBlue hover:bg-blue-900 text-white px-6 py-3.5 rounded-2xl font-bold text-sm transition shadow-md shadow-blue-900/10 flex items-center">
+                    Track <i class="fa fa-arrow-right ml-2 text-xs"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Container (Hidden until valid tracking number is found) -->
+        <div id="resultContainer" class="space-y-6 hidden">
+            
+            <!-- Top Summary Card -->
+            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brandBlue/5 rounded-bl-full pointer-events-none"></div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-100">
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 block mb-1">Consignment Tracking Number</span>
+                        <h2 id="resCode" class="text-2xl sm:text-3xl font-black font-mono text-brandBlue tracking-tight">--</h2>
+                    </div>
+                    <div id="resStatusBadge" class="bg-red-50 text-brandRed border border-red-100 font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider flex items-center shadow-sm">
+                        <i class="fa fa-circle-notch fa-spin mr-2"></i> --
+                    </div>
+                </div>
+
+                <!-- Sender, Recipient & Service Info Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 border-b border-gray-100 text-xs">
+                    <div class="space-y-1">
+                        <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] block"><i class="fa fa-user-tie mr-1"></i> Sender Details</span>
+                        <p id="resSender" class="font-bold text-gray-800 text-sm">--</p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] block"><i class="fa fa-map-location-dot mr-1"></i> Recipient Details</span>
+                        <p id="resRecipient" class="font-bold text-gray-800 text-sm">--</p>
+                        <p id="resAddress" class="text-gray-500 text-[11px]">--</p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] block"><i class="fa fa-truck-fast mr-1"></i> Service Type</span>
+                        <p id="resService" class="font-bold text-brandBlue text-sm">--</p>
+                    </div>
+                </div>
+
+                <!-- Current Location Full-Width Card (Estimated delivery removed) -->
+                <div class="pt-6">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50/40 p-5 rounded-2xl border border-blue-100/60 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-brandBlue text-white rounded-2xl flex items-center justify-center text-lg shadow-md shadow-blue-900/10 shrink-0">
+                            <i class="fa fa-location-arrow"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest block">Current Package Location</span>
+                            <h4 id="resLocation" class="text-base font-black text-brandDark mt-0.5">--</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkpoint History Logs -->
+            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100 space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                    <h3 class="font-black text-brandBlue text-base flex items-center">
+                        <i class="fa fa-timeline mr-2 text-brandRed"></i> Consignment Checkpoint Logs
+                    </h3>
+                    <span class="text-xs text-gray-400 font-medium">Live Audit Trail</span>
+                </div>
+
+                <!-- Timeline Logs Container -->
+                <div id="resTimeline" class="space-y-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-gray-200 pl-2">
+                    <!-- Dynamic Logs Injected Here -->
+                </div>
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="resetSearch()" class="text-xs text-gray-500 hover:text-brandRed font-semibold transition">
+                    &larr; Track another shipment number
                 </button>
             </div>
         </div>
 
-        <!-- Detailed Result Display Container -->
-        <div id="advancedTrackingResult" class="hidden space-y-6"></div>
+        <!-- Error Message Notice -->
+        <div id="errorContainer" class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-3xl text-center hidden space-y-2">
+            <i class="fa fa-triangle-exclamation text-2xl text-brandRed"></i>
+            <h4 class="font-bold text-sm">Tracking Number Not Found</h4>
+            <p class="text-xs text-gray-600">Please check your tracking code and try searching again or contact customer support.</p>
+        </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-brandDark text-white py-12 px-4 mt-auto">
-        <div class="max-w-7xl mx-auto text-center text-xs text-gray-400">
-            &copy; 2026 Global Touch Courier. All rights reserved.
+    <footer class="bg-brandDark text-white py-8 text-center text-xs text-gray-400 mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <p>&copy; 2026 Global Touch Courier. All rights reserved. Professional Global Logistics & Freight Management.</p>
         </div>
     </footer>
 
-    <!-- Firebase SDK Imports -->
+    <!-- Firebase SDK Imports & Tracking Search Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyARw8rUOLiHMR2A6EYONbMP1ncJN8UbJI",
             authDomain: "global-touch-courier.firebaseapp.com",
@@ -103,27 +169,20 @@
             measurementId: "G-GGEP3GXCPL"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Expose executeAdvancedTracking globally so HTML buttons can invoke it
-        window.executeAdvancedTracking = async function() {
-            const codeInput = document.getElementById('mainTrackingInput').value.trim().toUpperCase();
-            const resultContainer = document.getElementById('advancedTrackingResult');
+        window.handlePublicSearch = async function(e) {
+            e.preventDefault();
+            const codeInput = document.getElementById('searchInput').value.trim().toUpperCase();
+            if (!codeInput) return;
 
-            if (!codeInput) {
-                alert("Please enter a consignment code.");
-                return;
-            }
+            const searchCard = document.getElementById('searchCard');
+            const resultContainer = document.getElementById('resultContainer');
+            const errorContainer = document.getElementById('errorContainer');
 
-            resultContainer.innerHTML = `
-                <div class="bg-white p-8 rounded-3xl shadow-lg text-center text-gray-500">
-                    <i class="fa fa-circle-notch fa-spin text-2xl text-brandBlue mb-2"></i>
-                    <p class="text-sm">Fetching real-time tracking data from global database...</p>
-                </div>
-            `;
-            resultContainer.classList.remove('hidden');
+            errorContainer.classList.add('hidden');
+            resultContainer.classList.add('hidden');
 
             try {
                 const docRef = doc(db, "shipments", codeInput);
@@ -131,114 +190,69 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let timelineHtml = '';
+
+                    document.getElementById('resCode').innerText = codeInput;
+                    document.getElementById('resStatusBadge').innerHTML = `<i class="fa fa-circle-check mr-2"></i> ${data.status || 'In Transit'}`;
                     
-                    if (data.history && Array.isArray(data.history)) {
-                        data.history.forEach((h, index) => {
-                            const isLatest = index === data.history.length - 1;
-                            timelineHtml += `
-                                <div class="relative pl-8 pb-6 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
-                                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'} flex items-center justify-center text-white text-[9px]">
-                                        ${isLatest ? '<i class="fa fa-check"></i>' : ''}
+                    document.getElementById('resSender').innerText = data.senderName ? `${data.senderName} (${data.senderCountry || ''})` : (data.sender || 'N/A');
+                    document.getElementById('resRecipient').innerText = data.receiverName ? `${data.receiverName} (${data.receiverCountry || ''})` : (data.recipient || 'N/A');
+                    document.getElementById('resAddress').innerText = data.receiverAddress ? `Delivery Address: ${data.receiverAddress}` : '';
+                    document.getElementById('resService').innerText = data.service || 'Air Freight Express';
+                    document.getElementById('resLocation').innerText = data.currentLocation || 'In Transit Facility';
+
+                    // Build Timeline Logs
+                    const timelineContainer = document.getElementById('resTimeline');
+                    timelineContainer.innerHTML = '';
+
+                    const history = data.history || [{
+                        date: 'Recent Update',
+                        status: `Package status: ${data.status || 'In Transit'}`,
+                        location: data.currentLocation || 'Main Hub'
+                    }];
+
+                    history.forEach((hist, index) => {
+                        const isLatest = index === 0;
+                        const dotColor = isLatest ? 'bg-brandRed ring-4 ring-red-50' : 'bg-gray-300 ring-4 ring-white';
+                        
+                        timelineContainer.innerHTML += `
+                            <div class="relative flex items-start space-x-4 pl-8">
+                                <div class="absolute left-2.5 -translate-x-1/2 w-3.5 h-3.5 rounded-full ${dotColor} mt-1"></div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex-1 space-y-1">
+                                    <div class="flex justify-between items-center text-[11px] text-gray-400">
+                                        <span class="font-bold text-gray-600">${hist.date || 'Update'}</span>
+                                        ${isLatest ? '<span class="bg-red-100 text-brandRed font-bold px-2 py-0.5 rounded text-[10px]">Latest Status</span>' : ''}
                                     </div>
-                                    <p class="text-xs font-bold text-gray-400">${h.date}</p>
-                                    <p class="text-sm font-bold text-brandBlue mt-0.5">${h.status}</p>
-                                    <p class="text-xs text-gray-600 mt-1"><i class="fa fa-map-marker-alt text-brandRed mr-1"></i> Location: <strong>${h.location}</strong></p>
-                                </div>
-                            `;
-                        });
-                    }
-
-                    resultContainer.innerHTML = `
-                        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-6 gap-4">
-                                <div>
-                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Tracking Code</span>
-                                    <h2 class="text-2xl font-black text-brandBlue font-mono">${codeInput}</h2>
-                                </div>
-                                <span class="bg-red-50 text-brandRed font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wide border border-red-100">
-                                    <i class="fa fa-circle-notch fa-spin mr-1.5"></i> ${data.status}
-                                </span>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 border-b border-gray-100 text-xs">
-                                <div>
-                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Sender Details</span>
-                                    <strong class="text-gray-900 text-sm">${data.sender}</strong>
-                                </div>
-                                <div>
-                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Recipient Details</span>
-                                    <strong class="text-gray-900 text-sm">${data.recipient}</strong>
-                                </div>
-                                <div>
-                                    <span class="text-gray-400 block mb-1 uppercase font-bold tracking-wider">Service Type</span>
-                                    <strong class="text-gray-900 text-sm">${data.service}</strong>
+                                    <p class="text-xs font-bold text-gray-900">${hist.status}</p>
+                                    <p class="text-[11px] text-gray-500"><i class="fa fa-location-dot mr-1 text-brandRed"></i> Location: ${hist.location || 'Global Hub'}</p>
                                 </div>
                             </div>
+                        `;
+                    });
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 text-xs">
-                                <div class="bg-blue-50/60 p-4 rounded-2xl border border-blue-100">
-                                    <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Current Location</span>
-                                    <strong class="text-brandBlue text-sm"><i class="fa fa-location-arrow text-brandRed mr-1"></i> ${data.currentLocation}</strong>
-                                </div>
-                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
-                                    <span class="text-gray-500 block mb-1 uppercase font-bold tracking-wider">Estimated Delivery</span>
-                                    <strong class="text-gray-900 text-sm"><i class="fa fa-calendar-days text-brandBlue mr-1"></i> ${data.estimatedDelivery}</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8">
-                            <h3 class="text-lg font-bold text-brandBlue mb-6">Consignment Checkpoint Logs</h3>
-                            <div class="space-y-1">
-                                ${timelineHtml}
-                            </div>
-                        </div>
-                    `;
+                    searchCard.classList.add('hidden');
+                    resultContainer.classList.remove('hidden');
                 } else {
-                    resultContainer.innerHTML = `
-                        <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center text-sm">
-                            <i class="fa fa-circle-exclamation text-xl mb-2 block"></i>
-                            No shipment record found matching code <strong>${codeInput}</strong>. Please check your number or verify with support.
-                        </div>
-                    `;
+                    errorContainer.classList.remove('hidden');
                 }
             } catch (error) {
-                console.error("Error fetching shipment:", error);
-                resultContainer.innerHTML = `
-                    <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center text-sm">
-                        <i class="fa fa-triangle-exclamation text-xl mb-2 block"></i>
-                        An error occurred while connecting to the global database. Please try again.
-                    </div>
-                `;
+                console.error("Error fetching tracking info:", error);
+                errorContainer.classList.remove('hidden');
             }
         };
-    </script>
 
-    <!-- Interactive Scripts -->
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.getElementById('menuIcon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            } else {
-                menu.classList.add('hidden');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
-        }
+        window.resetSearch = function() {
+            document.getElementById('resultContainer').classList.add('hidden');
+            document.getElementById('searchCard').classList.remove('hidden');
+            document.getElementById('searchInput').value = '';
+        };
 
+        // Auto-run if query param `code` exists in URL (e.g. track.html?code=GT271019)
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const codeParam = urlParams.get('code');
             if (codeParam) {
-                document.getElementById('mainTrackingInput').value = codeParam;
-                if (window.executeAdvancedTracking) {
-                    window.executeAdvancedTracking();
-                }
+                document.getElementById('searchInput').value = codeParam;
+                handlePublicSearch({ preventDefault: () => {} });
             }
         });
     </script>
