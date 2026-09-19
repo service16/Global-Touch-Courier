@@ -165,11 +165,6 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Estimated Delivery Date/Time</label>
-                    <input type="text" id="newDelivery" required placeholder="June 25, 2026" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
-                </div>
-
                 <div class="border-t pt-4 mt-4 bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
                     <label class="block text-xs font-bold uppercase tracking-wider text-brandBlue mb-1"><i class="fa fa-clock-rotate-left mr-1"></i> Add Checkpoint Log Entry</label>
                     <p class="text-[11px] text-gray-500 mb-2">This will append a new event update to the shipment's live tracking timeline.</p>
@@ -272,13 +267,11 @@
             const recipient = document.getElementById('newRecipient').value.trim();
             const status = document.getElementById('newStatus').value;
             const location = document.getElementById('newLocation').value.trim();
-            const delivery = document.getElementById('newDelivery').value.trim();
             const logMessage = document.getElementById('newLogMessage').value.trim();
 
             const currentDateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' - ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             try {
-                // Check if editing existing or creating new
                 const docRef = doc(db, "shipments", code);
                 const docSnap = await getDoc(docRef);
 
@@ -287,7 +280,6 @@
                     historyArray = docSnap.data().history;
                 }
 
-                // If user wrote a new log message or it's a completely new shipment, append/initialize history
                 if (logMessage) {
                     historyArray.push({
                         date: currentDateStr,
@@ -308,7 +300,6 @@
                     service: service,
                     status: status,
                     currentLocation: location,
-                    estimatedDelivery: delivery,
                     history: historyArray
                 };
 
@@ -347,7 +338,6 @@
             document.getElementById('newRecipient').value = '';
             document.getElementById('newStatus').value = 'Order Processed';
             document.getElementById('newLocation').value = '';
-            document.getElementById('newDelivery').value = '';
             document.getElementById('newLogMessage').value = 'Package registered and processed at origin facility';
             document.getElementById('shipmentModal').classList.remove('hidden');
             generateRandomCode();
@@ -359,15 +349,14 @@
 
             document.getElementById('modalTitle').innerText = `Edit Shipment Record: ${code}`;
             document.getElementById('newCode').value = code;
-            document.getElementById('newCode').disabled = true; // Code cannot be changed once created
+            document.getElementById('newCode').disabled = true;
             document.getElementById('autoCodeBtn').style.display = 'none';
             document.getElementById('newService').value = item.service || 'Air Freight Express';
             document.getElementById('newSender').value = item.sender || '';
             document.getElementById('newRecipient').value = item.recipient || '';
             document.getElementById('newStatus').value = item.status || 'In Transit';
             document.getElementById('newLocation').value = item.currentLocation || '';
-            document.getElementById('newDelivery').value = item.estimatedDelivery || '';
-            document.getElementById('newLogMessage').value = ''; // Blank so admin can optionally add a new log entry
+            document.getElementById('newLogMessage').value = '';
 
             document.getElementById('shipmentModal').classList.remove('hidden');
         };
@@ -381,7 +370,6 @@
             document.getElementById('newCode').value = `GT-${randomNum}`;
         };
 
-        // Trigger initial load if already logged in
         if (localStorage.getItem('gt_admin_logged') === 'true') {
             loadAdminShipments();
         }
@@ -394,7 +382,6 @@
         function resetInactivityTimer() {
             if (localStorage.getItem('gt_admin_logged') === 'true') {
                 clearTimeout(inactivityTimer);
-                // 2 minutes = 120,000 milliseconds
                 inactivityTimer = setTimeout(() => {
                     handleLogout();
                     alert("Admin session expired due to 2 minutes of inactivity.");
@@ -402,7 +389,6 @@
             }
         }
 
-        // Listen for user actions to reset inactivity clock
         ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
             window.addEventListener(evt, resetInactivityTimer);
         });
