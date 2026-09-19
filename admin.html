@@ -23,7 +23,7 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Login Overlay Screen (Shown by default until logged in) -->
+    <!-- Login Overlay Screen -->
     <div id="loginScreen" class="fixed inset-0 bg-brandDark z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border-t-4 border-brandRed">
             <div class="text-center mb-6">
@@ -40,7 +40,7 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Password</label>
                     <input type="password" id="adminPass" required placeholder="••••••••" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandBlue">
                 </div>
-                <div id="loginError" class="text-red-600 text-xs hidden font-semibold text-center">Invalid username or password. (Try admin / password123)</div>
+                <div id="loginError" class="text-red-600 text-xs hidden font-semibold text-center">Invalid username or password. (Password is Globaltouch)</div>
                 <button type="submit" class="w-full bg-brandRed hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-500/20 text-sm">
                     Access Dashboard
                 </button>
@@ -59,6 +59,7 @@
                 <span class="bg-brandRed text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Admin Panel</span>
             </div>
             <div class="flex items-center space-x-4">
+                <span id="inactivityWarning" class="text-[11px] text-amber-400 hidden sm:inline"><i class="fa fa-clock mr-1"></i> Auto-logout in 2m inactivity</span>
                 <a href="index.html" target="_blank" class="text-xs text-gray-300 hover:text-white transition"><i class="fa fa-globe mr-1"></i> View Live Site</a>
                 <button onclick="handleLogout()" class="bg-gray-800 hover:bg-red-900 text-gray-200 px-3.5 py-2 rounded-xl text-xs font-semibold transition">
                     <i class="fa fa-right-from-bracket mr-1"></i> Logout
@@ -74,7 +75,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
             <div>
                 <h1 class="text-2xl font-black text-brandBlue">Shipment Control Center</h1>
-                <p class="text-xs text-gray-500 mt-0.5">Create custom consignment tracking numbers and monitor dispatch history logs.</p>
+                <p class="text-xs text-gray-500 mt-0.5">Create custom consignment tracking numbers, update dispatch logs, and manage statuses.</p>
             </div>
             <button onclick="openCreateModal()" class="bg-brandBlue hover:bg-blue-900 text-white px-5 py-3 rounded-xl font-bold text-sm transition shadow-md flex items-center">
                 <i class="fa fa-plus-circle mr-2"></i> Create New Shipment
@@ -107,21 +108,21 @@
         </div>
     </main>
 
-    <!-- Create Shipment Modal / Drawer -->
+    <!-- Create / Edit Shipment Modal -->
     <div id="shipmentModal" class="fixed inset-0 bg-brandDark/70 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 border-t-4 border-brandBlue my-8">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-brandBlue">Create New Shipment Record</h3>
+                <h3 id="modalTitle" class="text-xl font-bold text-brandBlue">Create New Shipment Record</h3>
                 <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-700 text-xl font-bold"><i class="fa fa-xmark"></i></button>
             </div>
 
-            <form onsubmit="saveNewShipment(event)" class="space-y-4">
+            <form onsubmit="saveShipmentData(event)" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Tracking Number</label>
                         <div class="flex">
                             <input type="text" id="newCode" required placeholder="e.g. GT-889922" class="flex-1 border border-gray-300 rounded-l-xl px-3 py-2.5 text-xs font-mono uppercase focus:outline-none focus:border-brandBlue">
-                            <button type="button" onclick="generateRandomCode()" class="bg-gray-100 hover:bg-gray-200 border border-l-0 border-gray-300 px-3 rounded-r-xl text-xs font-bold text-gray-600">Auto</button>
+                            <button type="button" id="autoCodeBtn" onclick="generateRandomCode()" class="bg-gray-100 hover:bg-gray-200 border border-l-0 border-gray-300 px-3 rounded-r-xl text-xs font-bold text-gray-600">Auto</button>
                         </div>
                     </div>
                     <div>
@@ -130,6 +131,7 @@
                             <option value="Air Freight Express">Air Freight Express</option>
                             <option value="Ocean Freight Cargo">Ocean Freight Cargo</option>
                             <option value="Ground Trucking Delivery">Ground Trucking Delivery</option>
+                            <option value="International Priority">International Priority</option>
                         </select>
                     </div>
                 </div>
@@ -149,10 +151,12 @@
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Current Package Status</label>
                         <select id="newStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
+                            <option value="Order Processed">Order Processed</option>
                             <option value="In Transit">In Transit</option>
                             <option value="Out for Delivery">Out for Delivery</option>
                             <option value="Delivered">Delivered</option>
-                            <option value="Order Processed">Order Processed</option>
+                            <option value="Held in Customs">Held in Customs</option>
+                            <option value="Exception / Delayed">Exception / Delayed</option>
                         </select>
                     </div>
                     <div>
@@ -166,14 +170,15 @@
                     <input type="text" id="newDelivery" required placeholder="June 25, 2026" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
                 </div>
 
-                <div class="border-t pt-4 mt-4">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Initial Activity Log Entry</label>
-                    <input type="text" id="newInitialLog" required placeholder="Package registered and processed at origin facility" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-brandBlue">
+                <div class="border-t pt-4 mt-4 bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-brandBlue mb-1"><i class="fa fa-clock-rotate-left mr-1"></i> Add Checkpoint Log Entry</label>
+                    <p class="text-[11px] text-gray-500 mb-2">This will append a new event update to the shipment's live tracking timeline.</p>
+                    <input type="text" id="newLogMessage" placeholder="e.g. Departed sorting facility or Arrived at destination hub" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs bg-white focus:outline-none focus:border-brandBlue">
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t">
                     <button type="button" onclick="closeCreateModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl font-bold text-xs transition">Cancel</button>
-                    <button type="submit" class="bg-brandRed hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md">Publish Shipment</button>
+                    <button type="submit" class="bg-brandRed hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md">Save Shipment Record</button>
                 </div>
             </form>
         </div>
@@ -187,7 +192,7 @@
     <!-- Firebase SDK Imports & Admin Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         // Your Firebase Configuration
         const firebaseConfig = {
@@ -204,6 +209,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        let cachedShipments = {};
+
         // Load Shipments from Firestore into Table
         window.loadAdminShipments = async function() {
             const tbody = document.getElementById('adminShipmentTableBody');
@@ -214,6 +221,7 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "shipments"));
                 tbody.innerHTML = '';
+                cachedShipments = {};
                 let count = 0;
 
                 if (querySnapshot.empty) {
@@ -226,6 +234,7 @@
                     count++;
                     const code = documentSnapshot.id;
                     const item = documentSnapshot.data();
+                    cachedShipments[code] = item;
 
                     tbody.innerHTML += `
                         <tr class="hover:bg-gray-50/85 transition">
@@ -239,7 +248,8 @@
                                 <span class="bg-red-50 text-brandRed font-bold px-2.5 py-1 rounded text-[10px]">${item.status || 'N/A'}</span>
                             </td>
                             <td class="p-4 text-gray-600">${item.currentLocation || 'N/A'}</td>
-                            <td class="p-4 text-right space-x-2">
+                            <td class="p-4 text-right space-x-1">
+                                <button onclick="openEditModal('${code}')" class="bg-blue-50 hover:bg-blue-100 text-brandBlue p-2 rounded-lg transition" title="Edit Shipment"><i class="fa fa-pen-to-square"></i></button>
                                 <button onclick="deleteShipment('${code}')" class="bg-red-50 hover:bg-red-100 text-brandRed p-2 rounded-lg transition" title="Delete Shipment"><i class="fa fa-trash-can"></i></button>
                             </td>
                         </tr>
@@ -253,8 +263,8 @@
             }
         };
 
-        // Save New Shipment to Firestore
-        window.saveNewShipment = async function(e) {
+        // Save / Update Shipment in Firestore
+        window.saveShipmentData = async function(e) {
             e.preventDefault();
             const code = document.getElementById('newCode').value.trim().toUpperCase();
             const service = document.getElementById('newService').value;
@@ -263,25 +273,47 @@
             const status = document.getElementById('newStatus').value;
             const location = document.getElementById('newLocation').value.trim();
             const delivery = document.getElementById('newDelivery').value.trim();
-            const initialLog = document.getElementById('newInitialLog').value.trim();
+            const logMessage = document.getElementById('newLogMessage').value.trim();
 
             const currentDateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' - ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-            const shipmentData = {
-                sender: sender,
-                recipient: recipient,
-                service: service,
-                status: status,
-                currentLocation: location,
-                estimatedDelivery: delivery,
-                history: [
-                    { date: currentDateStr, status: initialLog, location: location }
-                ]
-            };
-
             try {
-                await setDoc(doc(db, "shipments", code), shipmentData);
-                alert(`Shipment ${code} successfully published to Firebase and is now live for tracking!`);
+                // Check if editing existing or creating new
+                const docRef = doc(db, "shipments", code);
+                const docSnap = await getDoc(docRef);
+
+                let historyArray = [];
+                if (docSnap.exists() && docSnap.data().history) {
+                    historyArray = docSnap.data().history;
+                }
+
+                // If user wrote a new log message or it's a completely new shipment, append/initialize history
+                if (logMessage) {
+                    historyArray.push({
+                        date: currentDateStr,
+                        status: logMessage,
+                        location: location
+                    });
+                } else if (historyArray.length === 0) {
+                    historyArray.push({
+                        date: currentDateStr,
+                        status: `Package status updated to: ${status}`,
+                        location: location
+                    });
+                }
+
+                const shipmentData = {
+                    sender: sender,
+                    recipient: recipient,
+                    service: service,
+                    status: status,
+                    currentLocation: location,
+                    estimatedDelivery: delivery,
+                    history: historyArray
+                };
+
+                await setDoc(docRef, shipmentData);
+                alert(`Shipment ${code} successfully saved and updated on Firebase!`);
                 document.getElementById('shipmentModal').classList.add('hidden');
                 loadAdminShipments();
             } catch (error) {
@@ -304,25 +336,89 @@
             }
         };
 
+        // Modal Helpers exposed globally
+        window.openCreateModal = function() {
+            document.getElementById('modalTitle').innerText = "Create New Shipment Record";
+            document.getElementById('newCode').value = '';
+            document.getElementById('newCode').disabled = false;
+            document.getElementById('autoCodeBtn').style.display = 'block';
+            document.getElementById('newService').value = 'Air Freight Express';
+            document.getElementById('newSender').value = '';
+            document.getElementById('newRecipient').value = '';
+            document.getElementById('newStatus').value = 'Order Processed';
+            document.getElementById('newLocation').value = '';
+            document.getElementById('newDelivery').value = '';
+            document.getElementById('newLogMessage').value = 'Package registered and processed at origin facility';
+            document.getElementById('shipmentModal').classList.remove('hidden');
+            generateRandomCode();
+        };
+
+        window.openEditModal = function(code) {
+            const item = cachedShipments[code];
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = `Edit Shipment Record: ${code}`;
+            document.getElementById('newCode').value = code;
+            document.getElementById('newCode').disabled = true; // Code cannot be changed once created
+            document.getElementById('autoCodeBtn').style.display = 'none';
+            document.getElementById('newService').value = item.service || 'Air Freight Express';
+            document.getElementById('newSender').value = item.sender || '';
+            document.getElementById('newRecipient').value = item.recipient || '';
+            document.getElementById('newStatus').value = item.status || 'In Transit';
+            document.getElementById('newLocation').value = item.currentLocation || '';
+            document.getElementById('newDelivery').value = item.estimatedDelivery || '';
+            document.getElementById('newLogMessage').value = ''; // Blank so admin can optionally add a new log entry
+
+            document.getElementById('shipmentModal').classList.remove('hidden');
+        };
+
+        window.closeCreateModal = function() {
+            document.getElementById('shipmentModal').classList.add('hidden');
+        };
+
+        window.generateRandomCode = function() {
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('newCode').value = `GT-${randomNum}`;
+        };
+
         // Trigger initial load if already logged in
         if (localStorage.getItem('gt_admin_logged') === 'true') {
             loadAdminShipments();
         }
     </script>
 
-    <!-- Global UI Helper Scripts -->
+    <!-- Inactivity Auto-Logout & Authentication Handler -->
     <script>
+        let inactivityTimer;
+
+        function resetInactivityTimer() {
+            if (localStorage.getItem('gt_admin_logged') === 'true') {
+                clearTimeout(inactivityTimer);
+                // 2 minutes = 120,000 milliseconds
+                inactivityTimer = setTimeout(() => {
+                    handleLogout();
+                    alert("Admin session expired due to 2 minutes of inactivity.");
+                }, 120000);
+            }
+        }
+
+        // Listen for user actions to reset inactivity clock
+        ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, resetInactivityTimer);
+        });
+
         function handleAdminLogin(e) {
             e.preventDefault();
             const u = document.getElementById('adminUser').value.trim();
             const p = document.getElementById('adminPass').value.trim();
 
-            if (u === 'admin' && p === 'password123') {
+            if (u === 'admin' && p === 'Globaltouch') {
                 localStorage.setItem('gt_admin_logged', 'true');
                 document.getElementById('loginScreen').classList.add('hidden');
                 if (window.loadAdminShipments) {
                     window.loadAdminShipments();
                 }
+                resetInactivityTimer();
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
             }
@@ -330,28 +426,16 @@
 
         function handleLogout() {
             localStorage.removeItem('gt_admin_logged');
+            clearTimeout(inactivityTimer);
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('gt_admin_logged') === 'true') {
                 document.getElementById('loginScreen').classList.add('hidden');
+                resetInactivityTimer();
             }
         });
-
-        function openCreateModal() {
-            document.getElementById('shipmentModal').classList.remove('hidden');
-            generateRandomCode();
-        }
-
-        function closeCreateModal() {
-            document.getElementById('shipmentModal').classList.add('hidden');
-        }
-
-        function generateRandomCode() {
-            const randomNum = Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('newCode').value = `GT-${randomNum}`;
-        }
     </script>
 </body>
 </html>
