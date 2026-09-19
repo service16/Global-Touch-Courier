@@ -85,7 +85,7 @@
         <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 class="font-bold text-brandBlue text-base">Active Consignments Database</h3>
-                <span id="shipmentCount" class="text-xs bg-blue-50 text-brandBlue font-bold px-2.5 py-1 rounded-full">0 Shipments</span>
+                <span id="shipmentCount" class="text-xs bg-blue-50 text-brandBlue font-bold px-2.5 py-1 rounded-full">Loading...</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -184,9 +184,134 @@
         &copy; 2026 Global Touch Courier. Secure Administrative Portal.
     </footer>
 
-    <!-- Admin Logic Script -->
+    <!-- Firebase SDK Imports & Admin Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        // Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyARw8rUOLiHMR2A6EYONbMP1ncJN8UbJI",
+            authDomain: "global-touch-courier.firebaseapp.com",
+            projectId: "global-touch-courier",
+            storageBucket: "global-touch-courier.firebasestorage.app",
+            messagingSenderId: "52333288615",
+            appId: "1:52333288615:web:1dbbc2e3aefc49be22cf82",
+            measurementId: "G-GGEP3GXCPL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Load Shipments from Firestore into Table
+        window.loadAdminShipments = async function() {
+            const tbody = document.getElementById('adminShipmentTableBody');
+            const countBadge = document.getElementById('shipmentCount');
+            
+            tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400"><i class="fa fa-circle-notch fa-spin mr-1"></i> Loading shipments from database...</td></tr>`;
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "shipments"));
+                tbody.innerHTML = '';
+                let count = 0;
+
+                if (querySnapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No shipments found in database. Create one above.</td></tr>`;
+                    countBadge.innerText = `0 Shipments`;
+                    return;
+                }
+
+                querySnapshot.forEach((documentSnapshot) => {
+                    count++;
+                    const code = documentSnapshot.id;
+                    const item = documentSnapshot.data();
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-gray-50/85 transition">
+                            <td class="p-4 font-mono font-bold text-brandBlue">${code}</td>
+                            <td class="p-4">
+                                <span class="block text-gray-900 font-semibold">${item.sender || 'N/A'}</span>
+                                <span class="block text-[10px] text-gray-500">To: ${item.recipient || 'N/A'}</span>
+                            </td>
+                            <td class="p-4 text-gray-600">${item.service || 'N/A'}</td>
+                            <td class="p-4">
+                                <span class="bg-red-50 text-brandRed font-bold px-2.5 py-1 rounded text-[10px]">${item.status || 'N/A'}</span>
+                            </td>
+                            <td class="p-4 text-gray-600">${item.currentLocation || 'N/A'}</td>
+                            <td class="p-4 text-right space-x-2">
+                                <button onclick="deleteShipment('${code}')" class="bg-red-50 hover:bg-red-100 text-brandRed p-2 rounded-lg transition" title="Delete Shipment"><i class="fa fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                countBadge.innerText = `${count} Shipments`;
+            } catch (error) {
+                console.error("Error loading shipments:", error);
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-500">Failed to load shipments from Firebase database.</td></tr>`;
+            }
+        };
+
+        // Save New Shipment to Firestore
+        window.saveNewShipment = async function(e) {
+            e.preventDefault();
+            const code = document.getElementById('newCode').value.trim().toUpperCase();
+            const service = document.getElementById('newService').value;
+            const sender = document.getElementById('newSender').value.trim();
+            const recipient = document.getElementById('newRecipient').value.trim();
+            const status = document.getElementById('newStatus').value;
+            const location = document.getElementById('newLocation').value.trim();
+            const delivery = document.getElementById('newDelivery').value.trim();
+            const initialLog = document.getElementById('newInitialLog').value.trim();
+
+            const currentDateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' - ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            const shipmentData = {
+                sender: sender,
+                recipient: recipient,
+                service: service,
+                status: status,
+                currentLocation: location,
+                estimatedDelivery: delivery,
+                history: [
+                    { date: currentDateStr, status: initialLog, location: location }
+                ]
+            };
+
+            try {
+                await setDoc(doc(db, "shipments", code), shipmentData);
+                alert(`Shipment ${code} successfully published to Firebase and is now live for tracking!`);
+                document.getElementById('shipmentModal').classList.add('hidden');
+                loadAdminShipments();
+            } catch (error) {
+                console.error("Error saving shipment:", error);
+                alert("Failed to save shipment to Firebase. Please check your connection.");
+            }
+        };
+
+        // Delete Shipment from Firestore
+        window.deleteShipment = async function(code) {
+            if (confirm(`Are you sure you want to delete shipment record ${code}?`)) {
+                try {
+                    await deleteDoc(doc(db, "shipments", code));
+                    alert(`Shipment ${code} has been deleted.`);
+                    loadAdminShipments();
+                } catch (error) {
+                    console.error("Error deleting shipment:", error);
+                    alert("Failed to delete shipment.");
+                }
+            }
+        };
+
+        // Trigger initial load if already logged in
+        if (localStorage.getItem('gt_admin_logged') === 'true') {
+            loadAdminShipments();
+        }
+    </script>
+
+    <!-- Global UI Helper Scripts -->
     <script>
-        // Default admin credentials check
         function handleAdminLogin(e) {
             e.preventDefault();
             const u = document.getElementById('adminUser').value.trim();
@@ -195,7 +320,9 @@
             if (u === 'admin' && p === 'password123') {
                 localStorage.setItem('gt_admin_logged', 'true');
                 document.getElementById('loginScreen').classList.add('hidden');
-                loadAdminShipments();
+                if (window.loadAdminShipments) {
+                    window.loadAdminShipments();
+                }
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
             }
@@ -206,91 +333,11 @@
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
-        // Check login state on load
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('gt_admin_logged') === 'true') {
                 document.getElementById('loginScreen').classList.add('hidden');
             }
-            loadAdminShipments();
         });
-
-        // Load & Save Data Shared with Public via localStorage
-        function getDatabase() {
-            const customData = localStorage.getItem('gt_shipments_db');
-            if (customData) {
-                return JSON.parse(customData);
-            }
-            // Default built-in mock database
-            const defaultDb = {
-                "GT-984210": {
-                    sender: "Sarah Jenkins (New York, USA)",
-                    recipient: "Michael Chen (London, UK)",
-                    service: "Air Freight Express",
-                    status: "In Transit",
-                    currentLocation: "Heathrow Hub, London",
-                    estimatedDelivery: "June 20, 2026",
-                    history: [
-                        { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
-                        { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
-                        { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
-                    ]
-                },
-                "GT-102938": {
-                    sender: "TechCorp Logistics (Berlin, Germany)",
-                    recipient: "Global Solutions (Paris, France)",
-                    service: "Ground Road Delivery",
-                    status: "Out for Delivery",
-                    currentLocation: "Paris Local Distribution Centre",
-                    estimatedDelivery: "Today by 4:00 PM",
-                    history: [
-                        { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
-                        { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
-                    ]
-                }
-            };
-            localStorage.setItem('gt_shipments_db', JSON.stringify(defaultDb));
-            return defaultDb;
-        }
-
-        function saveDatabase(db) {
-            localStorage.setItem('gt_shipments_db', JSON.stringify(db));
-        }
-
-        function loadAdminShipments() {
-            const db = getDatabase();
-            const tbody = document.getElementById('adminShipmentTableBody');
-            const countBadge = document.getElementById('shipmentCount');
-            
-            tbody.innerHTML = '';
-            const keys = Object.keys(db);
-            countBadge.innerText = `${keys.length} Shipments`;
-
-            if (keys.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No shipments found in database. Create one above.</td></tr>`;
-                return;
-            }
-
-            keys.forEach(code => {
-                const item = db[code];
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50/80 transition">
-                        <td class="p-4 font-mono font-bold text-brandBlue">${code}</td>
-                        <td class="p-4">
-                            <span class="block text-gray-900 font-semibold">${item.sender}</span>
-                            <span class="block text-[10px] text-gray-500">To: ${item.recipient}</span>
-                        </td>
-                        <td class="p-4 text-gray-600">${item.service}</td>
-                        <td class="p-4">
-                            <span class="bg-red-50 text-brandRed font-bold px-2.5 py-1 rounded text-[10px]">${item.status}</span>
-                        </td>
-                        <td class="p-4 text-gray-600">${item.currentLocation}</td>
-                        <td class="p-4 text-right space-x-2">
-                            <button onclick="deleteShipment('${code}')" class="bg-red-50 hover:bg-red-100 text-brandRed p-2 rounded-lg transition" title="Delete Shipment"><i class="fa fa-trash-can"></i></button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
 
         function openCreateModal() {
             document.getElementById('shipmentModal').classList.remove('hidden');
@@ -304,49 +351,6 @@
         function generateRandomCode() {
             const randomNum = Math.floor(100000 + Math.random() * 900000);
             document.getElementById('newCode').value = `GT-${randomNum}`;
-        }
-
-        function saveNewShipment(e) {
-            e.preventDefault();
-            const code = document.getElementById('newCode').value.trim().toUpperCase();
-            const service = document.getElementById('newService').value;
-            const sender = document.getElementById('newSender').value.trim();
-            const recipient = document.getElementById('newRecipient').value.trim();
-            const status = document.getElementById('newStatus').value;
-            const location = document.getElementById('newLocation').value.trim();
-            const delivery = document.getElementById('newDelivery').value.trim();
-            const initialLog = document.getElementById('newInitialLog').value.trim();
-
-            const db = getDatabase();
-
-            const currentDateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' - ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-            db[code] = {
-                sender: sender,
-                recipient: recipient,
-                service: service,
-                status: status,
-                currentLocation: location,
-                estimatedDelivery: delivery,
-                history: [
-                    { date: currentDateStr, status: initialLog, location: location }
-                ]
-            };
-
-            saveDatabase(db);
-            closeCreateManager();
-            loadAdminShipments();
-            alert(`Shipment ${code} successfully published and is now live for tracking!`);
-            document.getElementById('shipmentModal').classList.add('hidden');
-        }
-
-        function deleteShipment(code) {
-            if (confirm(`Are you sure you want to delete shipment record ${code}?`)) {
-                const db = getDatabase();
-                delete db[code];
-                saveDatabase(db);
-                loadAdminShipments();
-            }
         }
     </script>
 </body>
