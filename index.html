@@ -225,6 +225,7 @@
                 <p class="text-gray-600 text-sm mt-2">Professional door-to-door handovers captured daily across our worldwide delivery network.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
                 <!-- Card 1: Commercial Cargo Dispatch -->
                 <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-200 group">
                     <div class="h-60 overflow-hidden relative bg-gray-200">
@@ -273,6 +274,7 @@
                 <p class="text-gray-600 text-sm mt-2">Certified logistics specialists managing air hubs, cargo terminals, and dispatch centers.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
                 <!-- Worker 1 -->
                 <div class="bg-gray-50 rounded-3xl overflow-hidden shadow-md border border-gray-200 text-center pb-6">
                     <div class="h-64 overflow-hidden relative mb-4 bg-gray-200">
@@ -282,6 +284,7 @@
                     <p class="text-xs text-brandRed font-semibold uppercase tracking-wider mt-0.5">Head of Air Operations</p>
                     <p class="text-xs text-gray-500 px-6 mt-3">Overseeing international flight cargo manifests and secure airport terminal connections.</p>
                 </div>
+
                 <!-- Worker 2 -->
                 <div class="bg-gray-50 rounded-3xl overflow-hidden shadow-md border border-gray-200 text-center pb-6">
                     <div class="h-64 overflow-hidden relative mb-4 bg-gray-200">
@@ -291,6 +294,7 @@
                     <p class="text-xs text-brandRed font-semibold uppercase tracking-wider mt-0.5">Client Support Director</p>
                     <p class="text-xs text-gray-500 px-6 mt-3">Managing global tracking inquiries and supporting clients around the clock.</p>
                 </div>
+
                 <!-- Worker 3 -->
                 <div class="bg-gray-50 rounded-3xl overflow-hidden shadow-md border border-gray-200 text-center pb-6">
                     <div class="h-64 overflow-hidden relative mb-4 bg-gray-200">
@@ -313,6 +317,7 @@
                 <p class="text-gray-400 text-sm mt-2">Read authentic feedback from individuals and global corporations who trust our service.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
                 <!-- Review 1 -->
                 <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl flex flex-col justify-between">
                     <div>
@@ -329,6 +334,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Review 2 -->
                 <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl flex flex-col justify-between">
                     <div>
@@ -345,6 +351,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Review 3 -->
                 <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl flex flex-col justify-between">
                     <div>
@@ -390,6 +397,7 @@
                 <img src="logo global.png" alt="Logo" loading="eager" decoding="async" class="h-9 w-auto brightness-0 invert mb-4">
                 <p class="text-gray-400 text-sm leading-relaxed">Global Touch Courier handles worldwide cargo logistics with absolute transparency, efficiency, and automated tracking infrastructure.</p>
             </div>
+
             <div>
                 <h5 class="font-bold text-base mb-4 text-brandRed uppercase tracking-wider">Quick Links</h5>
                 <ul class="space-y-2.5 text-sm text-gray-400">
@@ -400,6 +408,7 @@
                     <li><a href="contact.html" class="hover:text-white transition">Contact Support</a></li>
                 </ul>
             </div>
+
             <div>
                 <h5 class="font-bold text-base mb-4 text-brandRed uppercase tracking-wider">Specialist Services</h5>
                 <ul class="space-y-2.5 text-sm text-gray-400">
@@ -409,6 +418,7 @@
                     <li><a href="services.html" class="hover:text-white transition">Customs Brokerage</a></li>
                 </ul>
             </div>
+
             <div>
                 <h5 class="font-bold text-base mb-4 text-brandRed uppercase tracking-wider">Newsletter</h5>
                 <p class="text-sm text-gray-400 mb-3">Subscribe to industry insights and seasonal shipping discounts.</p>
@@ -469,6 +479,7 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('menuIcon');
+
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 icon.classList.remove('fa-bars');
@@ -479,99 +490,236 @@
                 icon.classList.add('fa-bars');
             }
         }
+    </script>
 
-        // Shared Database Loader
-        function getPublicDatabase() {
-            const customData = localStorage.getItem('gt_shipments_db');
-            if (customData) {
-                return JSON.parse(customData);
-            }
-            const defaultDb = {
-                "GT-984210": {
-                    sender: "Sarah Jenkins (New York, USA)",
-                    recipient: "Michael Chen (London, UK)",
-                    service: "Air Freight Express",
-                    status: "In Transit",
-                    currentLocation: "Heathrow Hub, London",
-                    estimatedDelivery: "June 20, 2026",
-                    history: [
-                        { date: "June 16, 2026 - 08:30 AM", status: "Package Received at Origin Facility", location: "New York JFK Cargo Terminal" },
-                        { date: "June 17, 2026 - 14:15 PM", status: "Departed Origin Country", location: "JFK Airport Flight #GT-402" },
-                        { date: "June 18, 2026 - 09:00 AM", status: "Arrived at Destination Hub", location: "Heathrow Hub, London" }
-                    ]
-                },
-                "GT-102938": {
-                    sender: "TechCorp Logistics (Berlin, Germany)",
-                    recipient: "Global Solutions (Paris, France)",
-                    service: "Ground Road Delivery",
-                    status: "Out for Delivery",
-                    currentLocation: "Paris Local Distribution Centre",
-                    estimatedDelivery: "Today by 4:00 PM",
-                    history: [
-                        { date: "June 17, 2026 - 10:00 AM", status: "Order Processed", location: "Berlin Warehouse" },
-                        { date: "June 18, 2026 - 06:00 AM", status: "Out for Final Delivery", location: "Paris Local Distribution Centre" }
-                    ]
-                }
-            };
-            localStorage.setItem('gt_shipments_db', JSON.stringify(defaultDb));
-            return defaultDb;
-        }
+    <!-- Firebase SDK + Homepage Tracking -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        function homeTrackShipment() {
-            const inputVal = document.getElementById('homeTrackingInput').value.trim().toUpperCase();
+        const firebaseConfig = {
+            apiKey: "AIzaSyAR8wUOLiHMR2A6EYONbMP1ncJN8UbJI",
+            authDomain: "global-touch-courier.firebaseapp.com",
+            projectId: "global-touch-courier",
+            storageBucket: "global-touch-courier.firebasestorage.app",
+            messagingSenderId: "52333288615",
+            appId: "1:52333288615:web:1dbbc2e3aefc49be22cf82",
+            measurementId: "G-GGEP3GXCPL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        /*
+         * HOMEPAGE TRACKING
+         * Uses the exact same Firebase Firestore database
+         * and "shipments" collection as track.html.
+         */
+        window.homeTrackShipment = async function() {
+            const input = document.getElementById('homeTrackingInput');
             const resultDiv = document.getElementById('homeTrackingResult');
 
+            const inputVal = input.value.trim().toUpperCase();
+
             if (!inputVal) {
-                alert("Please enter a tracking number.");
+                resultDiv.innerHTML = `
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-lg text-xs">
+                        <i class="fa fa-circle-exclamation mr-1"></i>
+                        Please enter a tracking number.
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
                 return;
             }
 
-            const trackingDatabase = getPublicDatabase();
-            const data = trackingDatabase[inputVal];
+            /*
+             * Show loading state while Firebase is being checked.
+             */
+            resultDiv.innerHTML = `
+                <div class="bg-blue-50 border border-blue-100 text-brandBlue p-4 rounded-xl text-xs flex items-center">
+                    <i class="fa fa-circle-notch fa-spin mr-2"></i>
+                    Checking live tracking information...
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
 
-            if (data) {
-                let historyHtml = '';
-                data.history.forEach((h, index) => {
-                    const isLatest = index === data.history.length - 1;
-                    historyHtml += `
-                        <div class="relative pl-6 pb-3 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
-                            <div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'}"></div>
-                            <p class="text-[11px] text-gray-400 font-medium">${h.date}</p>
-                            <p class="text-xs font-bold text-brandBlue">${h.status}</p>
-                            <p class="text-[11px] text-gray-600"><i class="fa fa-map-marker-alt text-brandRed mr-1"></i> ${h.location}</p>
+            try {
+                /*
+                 * IMPORTANT:
+                 * This is the SAME document structure used by track.html:
+                 *
+                 * shipments/{tracking number}
+                 */
+                const docRef = doc(db, "shipments", inputVal);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    /*
+                     * Support the exact fields used by track.html.
+                     */
+                    const sender = data.senderName
+                        ? `${data.senderName}${data.senderCountry ? ` (${data.senderCountry})` : ''}`
+                        : (data.sender || 'N/A');
+
+                    const recipient = data.receiverName
+                        ? `${data.receiverName}${data.receiverCountry ? ` (${data.receiverCountry})` : ''}`
+                        : (data.recipient || 'N/A');
+
+                    const service = data.service || 'Air Freight Express';
+                    const status = data.status || 'In Transit';
+                    const currentLocation = data.currentLocation || 'In Transit Facility';
+
+                    /*
+                     * Firebase history is normally stored with the newest
+                     * update first, exactly like track.html.
+                     */
+                    const history = Array.isArray(data.history) && data.history.length
+                        ? data.history
+                        : [{
+                            date: 'Recent Update',
+                            status: `Package status: ${status}`,
+                            location: currentLocation
+                        }];
+
+                    let historyHtml = '';
+
+                    history.forEach((h, index) => {
+                        const isLatest = index === 0;
+
+                        historyHtml += `
+                            <div class="relative pl-6 pb-3 border-l-2 ${isLatest ? 'border-brandRed' : 'border-gray-200'}">
+                                <div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full ${isLatest ? 'bg-brandRed ring-4 ring-red-100' : 'bg-gray-300'}"></div>
+
+                                <p class="text-[11px] text-gray-400 font-medium">
+                                    ${h.date || 'Update'}
+                                </p>
+
+                                <p class="text-xs font-bold text-brandBlue">
+                                    ${h.status || 'Package Update'}
+                                </p>
+
+                                <p class="text-[11px] text-gray-600">
+                                    <i class="fa fa-map-marker-alt text-brandRed mr-1"></i>
+                                    ${h.location || 'Global Hub'}
+                                </p>
+                            </div>
+                        `;
+                    });
+
+                    /*
+                     * Display the live Firebase result.
+                     */
+                    resultDiv.innerHTML = `
+                        <div class="bg-blue-50 p-3.5 rounded-xl mb-3 border border-blue-100">
+
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                    Status
+                                </span>
+
+                                <span class="bg-brandRed text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                    ${status}
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mt-3">
+
+                                <div>
+                                    <span class="text-gray-500 text-[10px] block">
+                                        Sender:
+                                    </span>
+                                    <strong>${sender}</strong>
+                                </div>
+
+                                <div>
+                                    <span class="text-gray-500 text-[10px] block">
+                                        Recipient:
+                                    </span>
+                                    <strong>${recipient}</strong>
+                                </div>
+
+                                <div>
+                                    <span class="text-gray-500 text-[10px] block">
+                                        Service:
+                                    </span>
+                                    <strong>${service}</strong>
+                                </div>
+
+                                <div>
+                                    <span class="text-gray-500 text-[10px] block">
+                                        Current Location:
+                                    </span>
+                                    <strong>${currentLocation}</strong>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-2 flex justify-between items-center">
+                            <h4 class="font-bold text-brandBlue text-xs">
+                                Activity Stream
+                            </h4>
+
+                            <a href="track.html?code=${encodeURIComponent(inputVal)}"
+                               class="text-brandRed text-xs font-semibold hover:underline">
+                                Full Details &rarr;
+                            </a>
+                        </div>
+
+                        <div class="space-y-1 mt-1 max-h-48 overflow-y-auto pr-1">
+                            ${historyHtml}
                         </div>
                     `;
-                });
+
+                } else {
+
+                    /*
+                     * Tracking number does not exist in Firebase.
+                     */
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs">
+                            <i class="fa fa-circle-exclamation mr-1"></i>
+                            No matching package for
+                            <strong>${inputVal}</strong>.
+                            Please check your tracking number.
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+
+                console.error("Homepage tracking error:", error);
 
                 resultDiv.innerHTML = `
-                    <div class="bg-blue-50 p-3.5 rounded-xl mb-3 border border-blue-100">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Status</span>
-                            <span class="bg-brandRed text-white text-[10px] px-2 py-0.5 rounded-full font-bold">${data.status}</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-1 text-xs mt-2">
-                            <div><span class="text-gray-500 text-[10px] block">Sender:</span> <strong>${data.sender}</strong></div>
-                            <div><span class="text-gray-500 text-[10px] block">Recipient:</span> <strong>${data.recipient}</strong></div>
-                        </div>
-                    </div>
-                    <div class="mb-2 flex justify-between items-center">
-                        <h4 class="font-bold text-brandBlue text-xs">Activity Stream</h4>
-                        <a href="track.html?code=${inputVal}" class="text-brandRed text-xs font-semibold hover:underline">Full Details &rarr;</a>
-                    </div>
-                    <div class="space-y-1 mt-1 max-h-40 overflow-y-auto pr-1">
-                        ${historyHtml}
-                    </div>
-                `;
-            } else {
-                resultDiv.innerHTML = `
                     <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs">
-                        <i class="fa fa-circle-exclamation mr-1"></i> No matching package for <strong>${inputVal}</strong>. Try checking your tracking number.
+                        <i class="fa fa-triangle-exclamation mr-1"></i>
+                        Unable to connect to the tracking system right now.
+                        Please try again.
                     </div>
                 `;
             }
 
             resultDiv.classList.remove('hidden');
-        }
+        };
+
+        /*
+         * Allow pressing ENTER inside the tracking input.
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            const trackingInput = document.getElementById('homeTrackingInput');
+
+            if (trackingInput) {
+                trackingInput.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        window.homeTrackShipment();
+                    }
+                });
+            }
+        });
     </script>
+
 </body>
 </html>
