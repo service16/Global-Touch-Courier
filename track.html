@@ -20,15 +20,27 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Stop layout shaking / jumping on mobile */
+        html, body {
+            overflow-x: hidden;
+        }
+        #resultContainer, #errorContainer, #searchCard {
+            transition: opacity 0.2s ease;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Top Navigation Header -->
     <header class="bg-brandRed text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <!-- Logo now links to Home -->
+            <a href="index.html" class="flex items-center space-x-3">
                 <img src="logo global.png" alt="Global Touch Courier" class="h-9 w-auto bg-white p-1 rounded-lg shadow-sm object-contain">
-            </div>
+            </a>
+
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-6 text-sm font-semibold tracking-wide">
                 <a href="index.html" class="hover:text-gray-200 transition">Home</a>
                 <a href="services.html" class="hover:text-gray-200 transition">Services</a>
@@ -36,18 +48,32 @@
                 <a href="quote.html" class="hover:text-gray-200 transition">Get a Quote</a>
                 <a href="contact.html" class="hover:text-gray-200 transition">Contact Us</a>
             </nav>
-            <div>
-                <a href="track.html" class="bg-brandDark hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow flex items-center">
+
+            <div class="flex items-center gap-3">
+                <a href="track.html" class="hidden sm:flex bg-brandDark hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow items-center">
                     <i class="fa fa-box mr-1.5"></i> Track Package
                 </a>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl focus:outline-none p-1">
+                    <i id="menuIcon" class="fa fa-bars"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-brandRed border-t border-red-700 px-4 pt-3 pb-5 space-y-3 shadow-xl">
+            <a href="index.html" class="block text-white font-bold py-2 border-b border-red-700/60">Home</a>
+            <a href="services.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Services</a>
+            <a href="track.html" class="block text-white font-bold py-2 border-b border-red-700/60">Track Shipment</a>
+            <a href="quote.html" class="block text-red-100 font-semibold py-2 border-b border-red-700/60">Get a Quote</a>
+            <a href="contact.html" class="block text-red-100 font-semibold py-2">Contact Us</a>
         </div>
     </header>
 
     <!-- Main Tracking Section -->
     <main class="max-w-4xl mx-auto px-4 py-10 flex-1 w-full space-y-8">
         
-        <!-- Search Bar Card (If no code is searched yet) -->
+        <!-- Search Bar Card -->
         <div id="searchCard" class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 text-center space-y-6">
             <div class="max-w-md mx-auto space-y-2">
                 <span class="bg-red-50 text-brandRed font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Real-Time Tracking System</span>
@@ -66,9 +92,16 @@
                     Track <i class="fa fa-arrow-right ml-2 text-xs"></i>
                 </button>
             </form>
+
+            <!-- Always visible Back to Home (even before tracking) -->
+            <div class="pt-2">
+                <a href="index.html" class="inline-flex items-center text-sm font-semibold text-brandBlue hover:text-brandRed transition">
+                    <i class="fa fa-home mr-2"></i> Back to Homepage
+                </a>
+            </div>
         </div>
 
-        <!-- Result Container (Hidden until valid tracking number is found) -->
+        <!-- Result Container -->
         <div id="resultContainer" class="space-y-6 hidden">
             
             <!-- Top Summary Card -->
@@ -102,7 +135,7 @@
                     </div>
                 </div>
 
-                <!-- Current Location Full-Width Card (Estimated delivery removed) -->
+                <!-- Current Location -->
                 <div class="pt-6">
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50/40 p-5 rounded-2xl border border-blue-100/60 flex items-center space-x-4">
                         <div class="w-12 h-12 bg-brandBlue text-white rounded-2xl flex items-center justify-center text-lg shadow-md shadow-blue-900/10 shrink-0">
@@ -125,24 +158,32 @@
                     <span class="text-xs text-gray-400 font-medium">Live Audit Trail</span>
                 </div>
 
-                <!-- Timeline Logs Container -->
                 <div id="resTimeline" class="space-y-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-gray-200 pl-2">
-                    <!-- Dynamic Logs Injected Here -->
+                    <!-- Dynamic Logs -->
                 </div>
             </div>
 
-            <div class="text-center pt-2">
-                <button onclick="resetSearch()" class="text-xs text-gray-500 hover:text-brandRed font-semibold transition">
-                    &larr; Track another shipment number
+            <!-- Clear Back to Home + Track another -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a href="index.html" class="inline-flex items-center bg-brandBlue hover:bg-blue-900 text-white px-6 py-3 rounded-xl text-sm font-bold transition shadow">
+                    <i class="fa fa-home mr-2"></i> Back to Homepage
+                </a>
+                <button onclick="resetSearch()" class="text-sm text-gray-500 hover:text-brandRed font-semibold transition">
+                    ← Track another shipment
                 </button>
             </div>
         </div>
 
-        <!-- Error Message Notice -->
-        <div id="errorContainer" class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-3xl text-center hidden space-y-2">
+        <!-- Error Message -->
+        <div id="errorContainer" class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-3xl text-center hidden space-y-3">
             <i class="fa fa-triangle-exclamation text-2xl text-brandRed"></i>
             <h4 class="font-bold text-sm">Tracking Number Not Found</h4>
             <p class="text-xs text-gray-600">Please check your tracking code and try searching again or contact customer support.</p>
+            <div class="pt-2">
+                <a href="index.html" class="inline-flex items-center text-sm font-semibold text-brandBlue hover:text-brandRed transition">
+                    <i class="fa fa-home mr-2"></i> Back to Homepage
+                </a>
+            </div>
         </div>
 
     </main>
@@ -150,11 +191,28 @@
     <!-- Footer -->
     <footer class="bg-brandDark text-white py-8 text-center text-xs text-gray-400 mt-auto border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 space-y-3">
-            <p>&copy; 2026 Global Touch Courier. All rights reserved. Professional Global Logistics & Freight Management.</p>
+            <p>© 2026 Global Touch Courier. All rights reserved. Professional Global Logistics & Freight Management.</p>
         </div>
     </footer>
 
-    <!-- Firebase SDK Imports & Tracking Search Logic -->
+    <!-- Mobile menu toggle -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+    </script>
+
+    <!-- Firebase SDK + Tracking Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -200,7 +258,7 @@
                     document.getElementById('resService').innerText = data.service || 'Air Freight Express';
                     document.getElementById('resLocation').innerText = data.currentLocation || 'In Transit Facility';
 
-                    // Build Timeline Logs
+                    // Build Timeline
                     const timelineContainer = document.getElementById('resTimeline');
                     timelineContainer.innerHTML = '';
 
@@ -242,11 +300,12 @@
 
         window.resetSearch = function() {
             document.getElementById('resultContainer').classList.add('hidden');
+            document.getElementById('errorContainer').classList.add('hidden');
             document.getElementById('searchCard').classList.remove('hidden');
             document.getElementById('searchInput').value = '';
         };
 
-        // Auto-run if query param `code` exists in URL (e.g. track.html?code=GT271019)
+        // Auto-run if ?code= is in the URL
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const codeParam = urlParams.get('code');
